@@ -17,4 +17,4 @@ BEDROCK_CHAT_MODEL       = os.getenv('BEDROCK_CHAT_MODEL', 'us.anthropic.claude-
 # 임베딩 모델, 토크나이저 (api용 사용)
 BEDROCK_EMBED_MODEL      = os.getenv('BEDROCK_EMBED_MODEL', 'amazon.titan-embed-text-v2:0')
 # 벡터 DB 주소
-DATABASE_URL             = os.getenv('DATABASE_URL', '')
+DATABASE_URL             = os.getenv('DATABASE_URL', 'postgresql://agent:agent@localhost:5432/agentlab')
