@@ -33,3 +33,23 @@ refinder_prompt = ChatPromptTemplate.from_messages([
 ])
 # 체인 구성 (고도화된 전문 기능, 심도있는 추론 -> 모델 상위로 적용)
 refinder_agent = refinder_prompt | get_chat_model() | StrOutputParser()
+
+def run_agent_collaboration( topic: str ) -> None: 
+  '''
+    - 아주 간단한 에이전트(간단한 랭체인 구성)간 협업
+    - 단방향 구조로 a2a 구성
+  '''
+  print(f'목표 {topic}\n' + '='*50)
+
+  # round 1. 신입 개발자 초안 개발
+  print("\n[신입 개발자] 코드 작성 중...") 
+
+  # round 2. 리뷰어가 피드백 제공 (평가)
+  print("\n[전문 개발자] 코드 검토 중...") 
+  draft_code = developer_agent.invoke( {"request": topic })
+  print(f'---\n {draft_code[:100]} ... \n (코드 생략) \n ---')
+
+  # round 3. 평가 결과에 따라 분기 -> pass가 나오면 개발 종료, 아니면 피드백 반영
+
+if __name__=='__main__':
+  run_agent_collaboration('사용자 비밀번호를 입력받아 DB에 저장하는 간단한 함수 (보안 고려)')
