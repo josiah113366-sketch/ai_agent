@@ -16,3 +16,8 @@
 L steps
   L step5_a2a_basic.py
 ```
+
+# 실행
+```
+python -m steps.step5_a2a_basic
+----
