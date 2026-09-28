@@ -8,14 +8,14 @@ from app.prompts import marketing_prompt
 
 # 프롬프트 구성 함수를 이용하여 동적 생성
 prompt = marketing_prompt("AI 고객 상담 솔루션", "온라인 쇼핑몰 CS팀")
-print( prompt )
+# print( prompt )
 
-# response = runtime_client().converse(
-#   modelId         = BEDROCK_CHAT_MODEL,
-#   messages        = [ { "role":"user", "content":[{ "text":prompt }] }],
-#   inferenceConfig = {
-#     "maxTokens" : 600 
-#   }
-# )
+response = runtime_client().converse(
+  modelId         = BEDROCK_CHAT_MODEL,
+  messages        = [ { "role":"user", "content":[{ "text":prompt }] }],
+  inferenceConfig = {
+    "maxTokens" : 600 
+  }
+)
 
-# print( response["output"]["message"]["content"][0]['text'] )
+print( response["output"]["message"]["content"][0]['text'] )
