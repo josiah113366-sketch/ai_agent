@@ -23,6 +23,8 @@ L steps/
 # 실행
 ```
 python -m steps.step3_prompt_engineering
+
+prompt = marketing_prompt("AI 고객 상담 솔루션", "온라인 쇼핑몰 CS팀")
 ---
 **반복되는 CS 문의, 이제 AI가 먼저 응답합니다.**
 
@@ -32,4 +34,16 @@ python -m steps.step3_prompt_engineering
 24시간 끊김 없는 응대로 고객 만족도와 팀의 업무 효율을 동시에 높입니다.
 
 **지금 무료로 체험하고, 우리 팀에 맞는 상담 자동화를 직접 확인해보세요.**
+
+prompt = marketing_prompt("Enterprise AI Agent", "업무 자동화를 검토하는 운영팀")
+---
+# Enterprise AI Agent
+
+반복되는 승인, 조회, 보고 업무에 매번 사람이 붙어야 한다면, 그 시간은 팀의 핵심 업무에서 그만큼 멀어지는 시간입니다.
+
+Enterprise AI Agent는 운영팀의 반복 워크플로우를 학습해 자동으로 처리하고, 예외 상황만 사람에게 넘겨 검토 부담을 줄여줍니다.
+
+기존 시스템과의 연동을 전제로 설계되어, 별도의 인프라 교체 없이 도입할 수 있습니다.
+
+**지금 운영팀의 반복 업무를 진단받아보세요 →** [무료 워크플로우 진단 신청하기]
 ```
