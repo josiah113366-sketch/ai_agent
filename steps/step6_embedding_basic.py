@@ -4,6 +4,7 @@
 '''
 
 from app.embedding import get_embeddings
+from math import sqrt 
 
 # 샘플 텍스트
 texts = [
@@ -17,3 +18,15 @@ vectors = get_embeddings().embed_documents( texts )
 print( '차원 ->', len(vectors[0]) )
 print( '차원 ->', len(vectors[1]) )
 print( '차원 ->', len(vectors[2]), vectors[2]) # 정규화 처리로 인해 음수 ~ 양수 값으로 배치 -1.0 ~ 1.0 사이로 추정
+
+# 코사인 유사도 -> 두 벡터 사이의 거리 계산 (의미가 가까운 문장을 검색 활용 -> postgresql에 반영)
+# 두 벡터가 같은 방향을 가리킨다면 1에 가까워진다. 
+def cosine_sim(a, b):
+  내적      = sum( x*y for x, y in zip(a, b) )
+  a벡터크기 = sqrt( sum( x*x for x in a ) )
+  b벡터크기 = sqrt( sum( x*x for x in b ) )
+  return 내적 / (a벡터크기*b벡터크기)
+
+print( cosine_sim(vectors[0], vectors[1]) )
+print( cosine_sim(vectors[0], vectors[2]) )
+print( cosine_sim(vectors[1], vectors[2]) )
