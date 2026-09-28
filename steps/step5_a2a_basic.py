@@ -27,3 +27,9 @@ reviewer_prompt = ChatPromptTemplate.from_messages([
 reviewer_agent = reviewer_prompt | get_chat_model() | StrOutputParser()
 
 # 피드백 반영 에이전트 
+refinder_prompt = ChatPromptTemplate.from_messages([
+    ("system", "당신은 열정적인 '신입 파이썬 개발자'입니다. 전문 개발자의 리뷰를 보고 코드를 수정해서 다시 제출하세요." ),
+    ("human", "이전 코드:\n{original_code}\n\n, 리뷰 내용:\n{feedback}\n\n 위 내용을 반영하여 개선된 전체 코드를 다시 작성하세요."), 
+])
+# 체인 구성 (고도화된 전문 기능, 심도있는 추론 -> 모델 상위로 적용)
+refinder_agent = refinder_prompt | get_chat_model() | StrOutputParser()
