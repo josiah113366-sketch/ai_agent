@@ -28,5 +28,5 @@ def cosine_sim(a, b):
   return 내적 / (a벡터크기*b벡터크기)
 
 print( cosine_sim(vectors[0], vectors[1]) )
-print( cosine_sim(vectors[0], vectors[2]) )
+print( cosine_sim(vectors[0], vectors[2]) ) # 방향성이 다른 문장에 비해 가깝다. 
 print( cosine_sim(vectors[1], vectors[2]) )
