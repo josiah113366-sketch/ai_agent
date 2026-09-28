@@ -2,3 +2,5 @@
 .env
 # 가상 환경 
 agent/
+# 캐싱 파일
+__pycache__/
