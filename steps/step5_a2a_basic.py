@@ -14,5 +14,16 @@ developer_prompt = ChatPromptTemplate.from_messages([
 # 체인 구성 
 developer_agent = developer_prompt | get_chat_model() | StrOutputParser()
 
+# 이전 에이전트의 출력이 다음 에이전트의 입력이 됨 
 # 전문 리뷰어 에이전트 
+reviewer_prompt = ChatPromptTemplate.from_messages([
+    ("system", "당신은 까다로운 '전문 개발자'입니다. 신입 개발자가 작성한 코드를 리뷰하세요. \n"
+               "보안 취약성, 비효율적인 부분, 스타일 가이드를 점검하고 수정 제안을 하세요. \n" 
+               "코드가 완벽하다면 'pass'라고만 답변하세요. \n" 
+    ),
+    ("human", "다음 코드를 리뷰해 주세요.\n\n{code}"), 
+])
+# 체인 구성 (고도화된 전문 기능, 심도있는 추론 -> 모델 상위로 적용)
+reviewer_agent = reviewer_prompt | get_chat_model() | StrOutputParser()
+
 # 피드백 반영 에이전트 
