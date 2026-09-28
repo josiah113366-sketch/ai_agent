@@ -14,11 +14,13 @@
   - 서비스 핵심 자산 관리해야 함
 
 # 구조
+```
 / 
 L app/ 
   L prompts.py                  : 프롬프트 구성, 퓨샷 
 L steps/
   L step3_prompt_engineering.py : 프롬프트 엔지니어링 기술 적용하여 LLM 질의 
+```
 
 # 실행
 ```
