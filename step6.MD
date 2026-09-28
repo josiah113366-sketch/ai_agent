@@ -12,3 +12,8 @@ L app
 L steps
   L step6_embedding_basic.py : 텍스트 임베딩(벡터화 처리), 유사도 검사
 ```
+
+# 실행
+```
+python -m steps.step6_embedding_basic
+```

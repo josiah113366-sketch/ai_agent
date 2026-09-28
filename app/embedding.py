@@ -12,5 +12,6 @@ def get_embeddings():
   global _embeddings
   if _embeddings is None:
     # 최초 1회만 초기화 
+    # dimensions : 차원 조정 가능 (기본 1024)
     _embeddings = BedrockEmbeddings(model_id=BEDROCK_EMBED_MODEL, region_name=AWS_REGION)
   return _embeddings
