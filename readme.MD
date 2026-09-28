@@ -24,9 +24,15 @@ source agent/Scripts/activate
 (agent) ... > pip install -r requirements.txt
 ```
 
+# Bedrock API 키 발급 
+- 30일 짜리 장기 키 발급 (단 리전은 버지니아에서 진행)
+
 # 환경 설정 파일 
 - .env
 ```
+# .env.example 카피하여 구성 
+# 추가, 뒤에 api는 별도 발급하여 세팅
+AWS_BEARER_TOKEN_BEDROCK=
 ```
 
 # 임베딩 모델
@@ -35,4 +41,13 @@ source agent/Scripts/activate
 - 모델 : amazon.titan-embed-text-v2:0
 ```
 https://us-east-1.console.aws.amazon.com/bedrock/home?region=us-east-1#/model-catalog/serverless/amazon.titan-embed-text-v2:0
+```
+
+# PC에 세팅된 리전 조정
+```
+# 확인
+aws configure get region 
+
+# 버지니아 조정 
+aws configure set region us-east-1
 ```
