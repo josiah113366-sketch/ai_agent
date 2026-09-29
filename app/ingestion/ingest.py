@@ -20,7 +20,7 @@ def ingest_file( path: Path ):
   # print( '-' * 30 )
   # print( body )
 
-  # 2. body(규약 원문) 관련 rag에서 검색 가능한 작은 단위로 chunk 처리
+  # 2. body(규약 원문) 관련 rag에서 검색 가능한 작은 단위로 chunk 처리 (fixed-size 단순 청킹 수행)
   pass 
 
 def main():
