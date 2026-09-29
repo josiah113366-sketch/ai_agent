@@ -45,6 +45,44 @@ CREATE TABLE IF NOT EXISTS documents (
 --    RAG 수행 시 chunk 단위로 검색, 하나의 문서는 n개의 chunk 분할
 --    documents_chunks 
 -- ====================================
+CREATE TABLE IF NOT EXISTS document_chunks (
+
+    -- chunk 내부 PK
+    id BIGSERIAL PRIMARY KEY,
+
+    -- 이 chunk가 어떤 문서에 속하는지 연결
+    -- documents.id를 참조하는 Foreign Key
+    document_id BIGINT NOT NULL
+        REFERENCES documents(id)
+        ON DELETE CASCADE,
+        -- 원본 documents가 삭제되면
+        -- 해당 문서의 chunk도 자동 삭제
+
+    -- 문서 내 chunk 순서
+    -- 예: 0, 1, 2, 3 ...
+    chunk_index INTEGER NOT NULL,
+
+    -- 실제 chunk 텍스트
+    -- RAG 검색 후 LLM에게 전달할 실제 내용
+    content TEXT NOT NULL,
+
+    -- chunk 내용을 임베딩한 벡터
+    -- 1024차원 임베딩 모델을 사용하는 구조
+    -- pgvector extension 필요
+    embedding VECTOR(1024) NOT NULL,
+
+    -- chunk별 추가 정보
+    -- JSON 형태이므로 필요한 속성을 유연하게 추가 가능
+    -- 예:
+    -- {"page": 3, "section": "휴가 규정"}
+    metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+
+    -- chunk 생성 시간
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+
+    -- 하나의 문서에서 동일한 chunk_index 중복 방지
+    UNIQUE(document_id, chunk_index)
+);
 
 -- ====================================
 -- 3. 문서 필터 검색용 인덱스 
