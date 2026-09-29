@@ -73,3 +73,10 @@ agentlab=# select * from demo_vectors;
 ----+---------+-----------
 (0 rows)
 ```
+
+# 실행 
+```
+python -m steps.step7_pgvector
+---
+환불 정책 [-0.06341178715229034, 0.05073736980557442, ... ]
+```
