@@ -3,6 +3,42 @@
 --    문서 자체, 메타 정보
 --    documents 
 -- ====================================
+CREATE TABLE IF NOT EXISTS documents (
+
+    -- 문서 내부 PK
+    -- BIGSERIAL: 값이 자동으로 1씩 증가
+    id BIGSERIAL PRIMARY KEY,
+
+    -- 문서를 식별하기 위한 업무용 코드
+    -- UNIQUE: 동일한 문서 코드 중복 등록 방지
+    document_code VARCHAR(100) UNIQUE NOT NULL,
+
+    -- 문서 담당 부서
+    -- 예: 인사팀, 재무팀, 개발팀
+    department VARCHAR(50) NOT NULL,
+
+    -- 문서 분류
+    -- 예: 규정, 매뉴얼, 가이드, 정책
+    category VARCHAR(100) NOT NULL,
+
+    -- 문서 제목
+    title TEXT NOT NULL,
+
+    -- 문서 출처
+    -- 예: 사내문서, Notion, PDF, URL 등
+    source TEXT NOT NULL,
+
+    -- 문서 버전
+    -- 예: v1.0, 2026-01
+    version VARCHAR(30),
+
+    -- 문서 효력 발생일
+    effective_date DATE,
+
+    -- DB에 문서가 등록된 시간
+    -- 값이 없으면 현재 시간을 자동 저장
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
 
 -- ====================================
 -- 2. 문서를 작은 단위(chunk)로 나눠서 저장하는 테이블 
