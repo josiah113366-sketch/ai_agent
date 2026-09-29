@@ -51,3 +51,14 @@ agentlab=# \dt
 ```
 python -m steps.step8_document_ingestion
 ```
+
+# 청킹 종류
+| 방식 | 기준 | 특징 | 적합한 경우 |
+|---|---|---|---|
+| **Fixed-size** | 글자/토큰 수 | 가장 단순 | 기본 실습 |
+| **Recursive** | 문단 → 문장 → 글자 | 구조를 최대한 유지 | 일반 RAG ⭐ |
+| **Sentence** | 문장 | 문장 단위 보존 | FAQ, 짧은 문서 |
+| **Structure-based** | 제목/섹션/Markdown | 문서 구조 보존 | 사내 업무 문서 ⭐ |
+| **Semantic** | 의미 유사도 | 의미가 바뀌는 지점에서 분리 | 고급 RAG ⭐ |
+| **Parent-Child** | 큰 Chunk + 작은 Chunk | 검색과 답변 컨텍스트 분리 | 긴 문서 |
+| **Agentic** | LLM/Agent 판단 | 문맥·주제에 따라 동적 분할 | 고급/Agentic RAG |

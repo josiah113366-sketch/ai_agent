@@ -16,9 +16,11 @@ DATA = ROOT / "data"
 def ingest_file( path: Path ): 
   # 1. 문서 내에서 메타 데이터와 본문 분리(혹은 로드) -> '---' 기준 분할 
   meta, body = load_markdown( path )
-  print( meta )
-  print( '-' * 30 )
-  print( body )
+  # print( meta )
+  # print( '-' * 30 )
+  # print( body )
+
+  # 2. body(규약 원문) 관련 rag에서 검색 가능한 작은 단위로 chunk 처리
   pass 
 
 def main():
