@@ -56,6 +56,17 @@ agentlab=# select * from documents;
 ----+----------------+------------+----------+------------------------+--------------------------+---------+----------------+-------------------------------
   1 | CS-REFUND-2026 | CS         | refund   | 고객 반품 및 환불 정책 | data\cs\refund_policy.md | 2026.3  | 2026-04-01     | 2026-09-29 05:17:07.834417+00
 (1 row)
+
+# 실행 결과 확인
+---
+select 
+  id, document_id, chunk_index, 
+  left(content, 10) || '...' as content, 
+  left(embedding::text, 20) || '...' as embedding, 
+  metadata 
+from document_chunks 
+order by id; 
+
 ```
 
 # 청킹 종류
