@@ -5,6 +5,7 @@
 
 from pathlib import Path 
 from .loader import load_markdown
+from .splitter import splite_text
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data"
@@ -21,6 +22,8 @@ def ingest_file( path: Path ):
   # print( body )
 
   # 2. body(규약 원문) 관련 rag에서 검색 가능한 작은 단위로 chunk 처리 (fixed-size 단순 청킹 수행)
+  chunks = splite_text(body# , 150)
+  print( chunks )
   pass 
 
 def main():
