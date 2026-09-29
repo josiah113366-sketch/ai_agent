@@ -23,6 +23,7 @@ def main():
   for path in sorted(DATA.rglob("*.md")):
       print( path )
       ingest_file( path )
+      break
   pass
 
 if __name__ == "__main__":
