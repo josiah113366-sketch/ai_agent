@@ -8,6 +8,8 @@
 ```
 /
 L docker-compose.yml
+L steps 
+  L step7_pgvector.py : 간단한 텍스트(문장)을 테이블 upsert(insert or update) 처리
 ```
 
 # 디비 구성
