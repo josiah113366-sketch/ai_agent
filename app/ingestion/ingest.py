@@ -40,6 +40,7 @@ def ingest_file( path: Path ):
       (document_code, department, category, title, source, version, effective_date)
       values 
       (%s, %s, %s, %s, %s, %s, %s)
+      on conflict(document_code)
       do update set
         department = EXCLUDED.department
         category = EXCLUDED.category 
@@ -56,11 +57,11 @@ def ingest_file( path: Path ):
     # delete 
     cur.execute('delete from document_chunks where document_id=%s', (document_id, )) 
     # n회 document_chunks 저장 
-    for i, (chunk, vector) in enumerate( zip(chunks, vectors) ): 
-      # insert 
-      cur.execute("""
+    # for i, (chunk, vector) in enumerate( zip(chunks, vectors) ): 
+    #   # insert 
+    #   cur.execute("""
       
-      """, ()) 
+    #   """, ()) 
 
     # 커밋 
     conn.commit()
