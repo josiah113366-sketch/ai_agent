@@ -26,7 +26,8 @@ def ingest_file( path: Path ):
   # print( body )
 
   # 2. body(규약 원문) 관련 rag에서 검색 가능한 작은 단위로 chunk 처리 (fixed-size 단순 청킹 수행)
-  chunks = splite_text(body)# , 150)
+  # 300 글자수로 청킹을 하니 시맨틱이 나름대로 잘 섹션화된 듯 -> 트레이드 오프상 최적 청킹 기준으로 판단할 수 있을 듯 (예상)
+  chunks = splite_text(body, 300) 
   # print( chunks )
 
   # 3. 임베딩 처리 
