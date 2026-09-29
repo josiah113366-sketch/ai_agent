@@ -15,8 +15,20 @@ def vector_search(query:str, k:int=5):
   results = None 
   with connect() as conn, conn.cursor() as cur: 
     # 질문과 청킹 처리된 임베딩 데이터와 비교하여 유사도 계산 -> (1-유사도), 정렬, 상위 k개만큼 반환 
+    # join 
+    # documents에서는 문서 코드, 제목, 부서, 카테고리, document_chunks에서는 원문 컨텐츠, (1-유사도) score
     cur.execute("""
-
-    """, ())
+      SELECT
+        d.document_code,
+        d.title,
+        d.department,
+        d.category,
+        dc.content,
+        1 - (dc.embedding <=> %s) AS score
+      FROM document_chunks AS dc
+      JOIN documents AS d ON d.id = dc.document_id
+      ORDER BY dc.embedding <=> %s
+      LIMIT %s
+    """, (q, q, k))
     results = cur.fetchall() 
   return results
