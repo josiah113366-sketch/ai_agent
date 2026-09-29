@@ -33,14 +33,20 @@ def ingest_file( path: Path ):
   # 4. 메타데이터, 벡터를 데이터베이스에 입력 -> 하나의 트랜잭션으로 관리
   # documents, document_chunks 각각 테이블에 입력 
   with connect() as conn, conn.cursor() as cur: 
-    # 1회 documents 저장 
-    cur.execute() 
+    # 1회 documents 저장, upsert 
+    cur.execute("""
+
+    """, ()) 
     document_id = cur.fetchone()[0]
     # 같은 문서로 저장된 청크가 존재한다면 -> 삭제 
-    cur.execute() 
+    # delete 
+    cur.execute('delete from document_chunks where document_id=%s', (document_id, )) 
     # n회 document_chunks 저장 
     for i, (chunk, vector) in enumerate( zip(chunks, vectors) ): 
-      cur.execute() 
+      # insert 
+      cur.execute("""
+      
+      """, ()) 
 
     # 커밋 
     conn.commit()
