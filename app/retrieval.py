@@ -14,6 +14,9 @@ def vector_search(query:str, k:int=5):
   # 2. 디비 커넥션, 커서 획득 
   results = None 
   with connect() as conn, conn.cursor() as cur: 
-    cur.execute()
+    # 질문과 청킹 처리된 임베딩 데이터와 비교하여 유사도 계산 -> (1-유사도), 정렬, 상위 k개만큼 반환 
+    cur.execute("""
+
+    """, ())
     results = cur.fetchall() 
   return results
