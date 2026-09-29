@@ -62,7 +62,7 @@ agentlab=# select * from documents;
 select 
   id, document_id, chunk_index, 
   left(content, 10) || '...' as content, 
-  left(embedding::text, 20) || '...' as embedding, 
+  left(embedding::text, 10) || '...' as embedding, 
   metadata 
 from document_chunks 
 order by id; 
