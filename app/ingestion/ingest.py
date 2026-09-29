@@ -34,9 +34,23 @@ def ingest_file( path: Path ):
   # documents, document_chunks 각각 테이블에 입력 
   with connect() as conn, conn.cursor() as cur: 
     # 1회 documents 저장, upsert 
+    # insert에 입력하고자 했던 값은 -> EXCLUDED.xxx 
     cur.execute("""
-
-    """, ()) 
+      insert into documents 
+      (document_code, department, category, title, source, version, effective_date)
+      values 
+      (%s, %s, %s, %s, %s, %s, %s)
+      do update set
+        department = EXCLUDED.department
+        category = EXCLUDED.category 
+        title= EXCLUDED.title
+        source= EXCLUDED.source 
+        version= EXCLUDED.version
+        effective_date= EXCLUDED.effective_date
+      returning id 
+    """, (meta['document_code'], meta['department'], meta['category'], meta['title'], 
+          str(path.relative_to(ROOT)), meta.get('version'), meta.get('effective_date') ) ) 
+    # 참조키 
     document_id = cur.fetchone()[0]
     # 같은 문서로 저장된 청크가 존재한다면 -> 삭제 
     # delete 
