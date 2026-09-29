@@ -8,6 +8,8 @@ from .loader import load_markdown
 from .splitter import splite_text
 from app.embedding import get_embeddings
 from app.database import connect
+from pgvector import Vector
+from psycopg.types.json import Jsonb
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data"
@@ -57,11 +59,21 @@ def ingest_file( path: Path ):
     # delete 
     cur.execute('delete from document_chunks where document_id=%s', (document_id, )) 
     # n회 document_chunks 저장 
-    # for i, (chunk, vector) in enumerate( zip(chunks, vectors) ): 
-    #   # insert 
-    #   cur.execute("""
-      
-    #   """, ()) 
+    for i, (chunk, vector) in enumerate( zip(chunks, vectors) ): 
+      # 청크별로 추가로 메타 정보 설정 (소스(원본 문서), 부서, 내용 카테고리)
+      chunk_meta = {
+        "section_source": path.name, 
+        "department": meta['department'], 
+        "category": meta['category']
+      }
+      # insert into document_chunks ... 
+      # Jsonb : 파이썬의 dict/list 데이터를 postgreSQL의 jsonb 타입으로 변환 처리 
+      cur.execute("""
+        insert into document_chunks 
+        (document_id, chunk_index, content, embedding, metadata)
+        values 
+        (%s, %s, %s, %s, %s)
+      """, (document_id, i, chunk, Vector(vector), Jsonb(chunk_meta))) 
 
     # 커밋 
     conn.commit()
