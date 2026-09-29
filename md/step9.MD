@@ -20,3 +20,8 @@ L app
 L steps
   L step9_rag_basic.py : 검색 증강 테스트용
 ```
+
+# 실행 
+```
+python -m steps.step9_rag_basic
+```
