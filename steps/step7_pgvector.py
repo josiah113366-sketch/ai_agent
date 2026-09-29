@@ -17,7 +17,13 @@ vectors = get_embeddings().embed_documents( samples )
 with connect() as conn, conn.cursor() as cur: # with문 2개 사용한 것과 같은 결과 
   # 데이터 : 원문 텍스트, 임베딩된 벡터
   for text, vec in zip( samples, vectors ): # 순서대로 쌍으로 묶어서 하나씩 꺼냄 
-    print( text, vec )
-    break
-
+    # print( text, vec )
+    # sql 수행 
+    cur.execute("""
+      insert into demo_vectors(content, embedding) values (%s, %s)
+      on conflict(content)
+      do update set embedding=EXCLUDED.embedding
+    """, (text, Vector(vec) ) )
+    # break
+  conn.commit()
   pass  
