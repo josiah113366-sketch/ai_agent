@@ -46,3 +46,8 @@ agentlab=# \dt
  public | schema_migrations | table | agent
 (4 rows)
 ```
+
+# 실행 
+```
+python -m steps.step8_document_ingestion
+```
