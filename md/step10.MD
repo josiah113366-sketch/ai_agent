@@ -9,3 +9,15 @@
 - 임계값의 최적화는 다른 문제 -> 차후 추론 등 과정을 통해 평가 진행 (최적 청킹에 대한 평가)
 - 임계값은 임시 설정
   - 변수 : 임베딩 모델, 문서(말뭉치 원소스)의 구성과 특성, 임계값, 사용(추론 행위) -> 평가 
+
+# 구조
+```
+/
+L app
+  L ingestion
+    L ingest.py            : 업그레이드 
+    L splitter.py          : 업그레이드 
+  L retrieval.py           : 업그레이드
+L steps
+  L step10_rag_advanced.py : 신규 
+```
