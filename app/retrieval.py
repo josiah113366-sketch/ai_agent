@@ -79,6 +79,8 @@ def advanced_search(
 
         # 하이브리드 검색 + 키워드 검색 
         # 유사도 점수(80%), FTS(20%) 점수를 블렌딩 처리 -> 보다 정확한 의미를 가진 정보 추출 + 키워드 (부서, 카테고리)
+
+        # LEAST(fts_score, 1.0)*0.2 : 둘 중 더 작은 값을 선택 0.0 <- LEAST(fts_score, 1.0) <= 0.2
     '''
     sql = f"""
             with scored as (
@@ -112,3 +114,10 @@ def advanced_search(
             order by hybrid_score desc 
             limit %s            
         """
+
+    # [ 벡터화된 질문, 오리지널 질문 텍스트, 동적으로 구성되는 키워드들, 최대 1 ~ 20개 구성 | k개 ]
+    total_params = [q, query, *params, max(1, min(k, 20) ) ]
+
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute( sql, total_params )
+        return cur.fetchall()
