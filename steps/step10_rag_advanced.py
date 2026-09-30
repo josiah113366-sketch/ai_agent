@@ -5,9 +5,10 @@
 '''
 
 # 시맨틱 청킹 
-from app.ingestion.splitter import semantic_splite_text
+from app.ingestion.splitter import semantic_splite_text, splite_text
 
 # 임시 문서 (말뭉치 직접 제공) 사용 -> 차후 실제 문서로 대체 
+# 의도적으로 서로 다른 주제로 데모 문서 제공 (cs -> hr -> sales)
 DEMO_TEXT = """
 상품을 수령한 뒤 단순 변심으로 반품하려는 고객은 수령일로부터 7일 이내에 신청해야 합니다.
 반품 상품은 사용 흔적이 없어야 하며 포장 상태가 보존되어야 합니다.
@@ -20,3 +21,9 @@ DEMO_TEXT = """
 월 매출 분석에서는 주문 금액, 판매 수량, 환불 금액을 함께 확인합니다.
 전월 대비 증감률과 상품별 매출 비중을 계산하면 주요 매출 변화 원인을 찾을 수 있습니다.
 """.strip()
+
+# 1. 고정 크기 청킹 (문단 기준 청킹) (데모 텍스트가 작아서 chars수도 작게 임의 구성)
+paragraph_chunks = splite_text(DEMO_TEXT, max_chars=300)
+
+# 2. 시맨틱 청킹 (데모 텍스트가 작아서 chars수도 작게 임의 구성)
+semantic_chunks = semantic_splite_text(DEMO_TEXT, threshold=0.55, min_chars=80, max_chars=400)
