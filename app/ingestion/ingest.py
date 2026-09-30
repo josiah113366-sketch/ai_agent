@@ -5,7 +5,7 @@
 
 from pathlib import Path 
 from .loader import load_markdown
-from .splitter import splite_text
+from .splitter import splite_text, semantic_splite_text
 from app.embedding import get_embeddings
 from app.database import connect
 from pgvector import Vector
@@ -16,6 +16,25 @@ DATA = ROOT / "data"
 # print( DATA )
 # rglob() : 하위 경로까지 다 찾아가서 해당 파일을 찾는다. 
 # print( DATA.rglob("*.md") )
+
+# 청킹 처리 통합 함수 
+def make_chunks(
+    body:str, 
+    *, 
+    strategy: str = "paragraph", # paragraph : 고정 크기, semantic: 의미 단위
+    semantic_threshold: float = 0.60, 
+    # max_chars: int = 1200 # 추후 적용 
+)-> list[str]:
+  # 문단/길이 기준 청킹
+  if strategy == "paragraph":
+    return splite_text(body)
+  # 의미 유사도 기준 청킹 
+  elif strategy == "semantic":
+    return semantic_splite_text(body, semantic_threshold)
+  # 예외 처리 
+  raise ValueError(f"알 수 없는 청킹 방식 {strategy}")
+
+  pass
 
 # md 파일별로 처리 
 def ingest_file( path: Path ): 
