@@ -37,7 +37,8 @@ def make_chunks(
   pass
 
 # md 파일별로 처리 
-def ingest_file( path: Path ): 
+# 청킹 방법 선택, 필요 시 유사도 임계값 설정 가능
+def ingest_file( path: Path, strategy:str, semantic_threshold:float ): 
   # 1. 문서 내에서 메타 데이터와 본문 분리(혹은 로드) -> '---' 기준 분할 
   meta, body = load_markdown( path )
   # print( meta )
@@ -46,8 +47,10 @@ def ingest_file( path: Path ):
 
   # 2. body(규약 원문) 관련 rag에서 검색 가능한 작은 단위로 chunk 처리 (fixed-size 단순 청킹 수행)
   # 300 글자수로 청킹을 하니 시맨틱이 나름대로 잘 섹션화된 듯 -> 트레이드 오프상 최적 청킹 기준으로 판단할 수 있을 듯 (예상)
-  chunks = splite_text(body, 300) 
+  # chunks = splite_text(body, 300) 
   # print( chunks )
+  # 2. 시맨틱 수정
+  chunks = make_chunks( body, strategy=strategy, semantic_threshold=semantic_threshold ) 
 
   # 3. 임베딩 처리 
   vectors = get_embeddings().embed_documents( chunks )
@@ -104,7 +107,7 @@ def main():
   # 파일별 처리 
   for path in sorted(DATA.rglob("*.md")):
       print( path )
-      ingest_file( path )
+      ingest_file( path, "semantic", 0.55 )
       # break
   pass
 
