@@ -21,4 +21,7 @@ def search_company_policy(query: str, department: str = "") -> str:
   # [source=CS-REFUND-2026 | hybrid=0.089] ccc ... 
   # [source=CS-REFUND-2026 | hybrid=0.009] ppp ... 
   # 위의 문단들을 하나의 말뭉치로 구성하여 LLM에 추론 시 근거 자료로 제공 
-  return "\n\n".join( f"[source={row[0]} | hybrid= {row[-1]:.3f }]\n{row[4]}" for row in rows )
+  return "\n\n".join(
+    f"[source={row[0]} | hybrid={row[-1]:.3f}]\n{row[4]}"
+    for row in rows
+)
