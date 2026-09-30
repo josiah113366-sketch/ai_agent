@@ -15,10 +15,25 @@
 # 정규식 
 import re
 
-# 긴 문장(말뭉치)을 문장 단위로 분리
+# 350 글자수(설정값) 이상을 가진 문단을 재료로 쪼개기 진행
 def _splite_sentencess(block: str) -> list[str]: 
   # 1. 좌우 공백 제거
   block = block.strip() 
+  # 2. 값 체크
+  if not block: return []
+  # 3. 줄 단위로 분절 -> 제목/목록 등등 문서 형식에 따라서는 의미가 있음 
+  print( "block.splitlines() : ", block.splitlines() )
+  lines = [
+    line.strip()
+    for line in block.splitlines() 
+    if line.strip()  
+  ]
+  # 최종 분절 데이터 담는 그릇 
+  units: list[str] = list() 
+
+  # 라인별 순회 -> 문장의 끝 기호(.!?。 ！ ？) 체크 -> 기반으로 순회를 하여 units에 포함
+
+  return units
 
 # 시맨틱에 맞게 데이터 담는 작업
 # 문단 = 문장 + 문장 + ... 
