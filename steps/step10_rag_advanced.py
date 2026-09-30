@@ -24,8 +24,8 @@ DEMO_TEXT = """
 
 # 1. 고정 크기 청킹 (문단 기준 청킹) (데모 텍스트가 작아서 chars수도 작게 임의 구성)
 paragraph_chunks = splite_text(DEMO_TEXT, max_chars=300)
-for i, chunk in enumerate(paragraph_chunks, 1):
-  print( f"[{i}] {chunk}" )
+# for i, chunk in enumerate(paragraph_chunks, 1):
+#   print( f"[{i}] {chunk}" )
 
 # 문단 기준 청킹의 문제점 -> cs와 hr이 같은 맥락으로 청킹이 되었음 -> 크기 기준으로 진행하다보니 생기는 문제
 # -> 원소스 문서를 분리하면(각각 문서로 존재하면) 해결은 가능함
@@ -43,3 +43,5 @@ for i, chunk in enumerate(paragraph_chunks, 1):
 
 # 2. 시맨틱 청킹 (데모 텍스트가 작아서 chars수도 작게 임의 구성)
 semantic_chunks = semantic_splite_text(DEMO_TEXT, threshold=0.55, min_chars=80, max_chars=400)
+for i, chunk in enumerate(semantic_chunks, 1):
+  print( f"[{i}] {chunk}" )
