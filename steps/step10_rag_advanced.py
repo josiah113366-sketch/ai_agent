@@ -42,6 +42,6 @@ paragraph_chunks = splite_text(DEMO_TEXT, max_chars=300)
 '''
 
 # 2. 시맨틱 청킹 (데모 텍스트가 작아서 chars수도 작게 임의 구성)
-semantic_chunks = semantic_splite_text(DEMO_TEXT, threshold=0.55, min_chars=80, max_chars=400)
+semantic_chunks = semantic_splite_text(DEMO_TEXT, threshold=0.55, max_chars=400)
 for i, chunk in enumerate(semantic_chunks, 1):
   print( f"[{i}] {chunk}" )

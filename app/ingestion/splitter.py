@@ -79,7 +79,7 @@ def _semantic_units(text: str) -> list[str]:
   # 3. 문단 단위로 순회 -> 1차적으로 청킹 진행 (최소 글자수 단위 나름 구성 -> 350(설정값) 기준)
   for block in blocks: 
     if len(block) <= 350:
-      units.append()
+      units.append( block )
     else: 
       # 350 글자수보다 많은 글자수를 가진 문단을 좀 더 쪼개기 위해서 _splite_sentencess()에 전달
       units.append(
@@ -121,7 +121,9 @@ def _cosine_similarity(
 
 # 시맨틱 청킹 함수 
 # 원문, 임계값(0.6 이하면 청킹), 최소 글자수, 최대 글자수(유사도가 계속 0.6 이상이어도 최대 글자수가 1200 넘어가면 청킹)
-def semantic_splite_text( text:str, threshold: float=0.60, min_chars:int = 300, max_chars: int = 1200 ) -> list[str]:
+def semantic_splite_text( text:str, threshold: float=0.60, 
+                         # min_chars:int = 300, 
+                         max_chars: int = 1200 ) -> list[str]:
   # 1. semantic 유닛 단위 분할
   units = _semantic_units( text )
   # 2. 값 체크 -> 분절의 결과
@@ -134,7 +136,7 @@ def semantic_splite_text( text:str, threshold: float=0.60, min_chars:int = 300, 
 
   # 5. 담는 그릇 
   chunks: list[str] = list() 
-  current = units[0] 
+  current = units[0]  # 분절화된 문장/문장 조간의 첫번째 데이터 
 
   # 6. 유닛간, 이전 벡터와 다음 벡터간 유사도 검사 (순회)
   for index in range(1, len(units)): 
@@ -146,6 +148,34 @@ def semantic_splite_text( text:str, threshold: float=0.60, min_chars:int = 300, 
 
     # 6-2. 유사도 검사 
     similarity = _cosine_similarity( pre_vec, cur_vec )
+
+    # 6-3. 청킹 후보 텍스트 준비
+    candidate = (
+      current   
+      + "\n\n"
+      + units[index]
+    )
+
+    # 6-4. 청킹 처리
+    # 유사도가 임계값보다 작은가? and candidate의 글자수가 max_chars보다 큰가? min_chars보다 작은가? 
+    # -> candidate는 청킹 x 
+    if(
+      similarity < threshold or len(candidate) > max_chars # or len(candidate) < min_chars
+    ):
+      # 맥락(의미, 뉘앙스)이 바뀌었거나, 맥락은 이어지지만 글자수가 많거나 
+      chunks.append( current )
+      # 현재 문장은 다음 문장으로 세팅
+      current = units[index]
+    else: 
+        # 유사도가 임계값보다 높거나, 글자 수가 아직 여유 있다 -> 문장을 합쳐라 -> candidate 
+        # 데이터를 누적한 candidate로 대체함 
+        current = candidate
+
+  # 순회를 마무리해도 남은 문장이 존재하면 그대로 청킹
+  if current: 
+    chunks.append( current )
+
+  return chunks
 
 def splite_text(text: str, max_chars:int = 700):
   # 청크별로 모으는 그룻, 현재 순서상 문서 데이터 
