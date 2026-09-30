@@ -77,25 +77,38 @@ def advanced_search(
         # to_tsvector() : 문서 내용을 검색 가능한 토큰 형태로 변환. 'simple' 보편적인 언어 대상, 'english' 등 존재
         # plainto_tsquery() : 사용자가 입력한 일반 문자열을 PostgreSQL의 검색 Query 형태로 변환
 
-        # 하이브리드 검색 
-        # 유사도 점수(80%), FTS(20%) 점수를 블렌딩 처리 -> 보다 정확한 의미를 가진 정보 추출 
+        # 하이브리드 검색 + 키워드 검색 
+        # 유사도 점수(80%), FTS(20%) 점수를 블렌딩 처리 -> 보다 정확한 의미를 가진 정보 추출 + 키워드 (부서, 카테고리)
     '''
     sql = f"""
-            select
-                d.document_code,
-                d.title,
-                d.department,
-                d.category,
-                c.content,
-                1-(c.embedding <=> %s) as vector_score, 
-                ts_rank(
-                    to_tsvector('simple', c.content), 
-                    plainto_tsquery('simple', %s)
-                ) as fts_score
+            with scored as (
+                select
+                    d.document_code,
+                    d.title,
+                    d.department,
+                    d.category,
+                    c.content,
+                    1-(c.embedding <=> %s) as vector_score, 
+                    ts_rank(
+                        to_tsvector('simple', c.content), 
+                        plainto_tsquery('simple', %s)
+                    ) as fts_score
+                from document_chunks c 
+                join documents d
+                on c.document_id=d.id
+                order by (c.embedding <=> %s)
+                {where}
+            )
 
-            from document_chunks c 
-            join documents d
-            on c.document_id=d.id
-            order by (c.embedding <=> %s)
-            limit %s
+            select 
+                document_code, 
+                title, 
+                department, 
+                category,
+                content, 
+                vector_score, 
+                (vector_score * 0.80 + LEAST(fts_score, 1.0)*0.20 ) as hybrid_score
+            from scored
+            order by hybrid_score desc 
+            limit %s            
         """
