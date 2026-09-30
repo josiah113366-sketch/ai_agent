@@ -26,3 +26,12 @@ L steps
 ```
 python -m steps.step10_rag_advanced
 ```
+
+# 시맨틱 청킹 후 db에 입력
+- app.ingestion.ingest.py 수정
+  - 청킹의 종류별로 사용할 수 있는 상위 함수 구성 
+  - 데이터를 구축하는 부분에 함수 대체 
+```
+# 최종 실행
+python -m steps.step8_document_ingestion
+```
