@@ -34,4 +34,17 @@ python -m steps.step10_rag_advanced
 ```
 # 최종 실행
 python -m steps.step8_document_ingestion
+
+# psql 접속 후 
+---
+select 
+  id, document_id, chunk_index, 
+  left(content, 10) || '...' as content, 
+  left(embedding::text, 10) || '...' as embedding, 
+  metadata 
+from 
+  document_chunks 
+order by id; 
+
+# 문단 단위 기준 대비 청킹 숫자가 변화됨을 확인
 ```
