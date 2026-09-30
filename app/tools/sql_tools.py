@@ -60,7 +60,7 @@ def top_products(start_date: str, end_date: str, limit:int=3) -> str:
         sum(o.amount) desc 
       limit %s 
     """
-    params = () 
+    params = (start_date, end_date, max(1, min(limit, 9)) ) 
     cur.execute(sql, params)
     rows = cur.fetchall() 
   return "\n".join( f"{i+1}. {name}: qty={qty}, revenue={revenue} " for i, (name, qty, revenue) in enumerate( rows ) )
