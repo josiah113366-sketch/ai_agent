@@ -32,7 +32,27 @@ def _splite_sentencess(block: str) -> list[str]:
   units: list[str] = list() 
 
   # 라인별 순회 -> 문장의 끝 기호(.!?。 ！ ？) 체크 -> 기반으로 순회를 하여 units에 포함
-
+  '''
+  # 라인 1개에 문장 개 들어... 
+  "환불 가능합니다. 배송비가 발생합니다."
+  # 처리 
+  [
+    "환불 가능합니다.", 
+    "배송비가 발생합니다."
+  ]
+  '''
+  for line in lines: 
+    # 후방 검색 "(?<=[탐색문자들표시])".  바로 앞 문자가 문장 종결 기호인지 체크
+    sentences = re.split(r"(?<=[.!?。 ！ ？])\s+", line)
+    # units에 담기 -> 문장 끝 기호로 분절된 문장을 리스트에 담기
+    units.extend(
+        sentence.strip() 
+        for sentence in sentences
+        if sentence.strip() 
+    )
+  # units의 구성원은 온전한 문장 1개 혹은 문장이 길어서 쪼개진 문장의 조각들이 포함될 수 있음 
+  # 구성원 내부에 2개의 문장은 존재 x 
+  # 단, 문서가 완결되는 표시(.!?。 ！ ？)가 있다는 전제하에 구성
   return units
 
 # 시맨틱에 맞게 데이터 담는 작업
