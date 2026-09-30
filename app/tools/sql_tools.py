@@ -36,10 +36,29 @@ def top_products(start_date: str, end_date: str, limit:int=3) -> str:
   '''
     특정 날짜 범위(YYYY-MM-DD) 내에서 결제 완료된 매출 기준 상위 제품 조회
     제품명(name), 수량(qty), 매출액(revenue)를 추출한다
+    - 조인, 조건, 집계, 정렬, 제한
   '''
   with connect() as conn, conn.cursor() as cur: 
     sql = """
-      
+      select 
+        p.product_name,
+        sum(o.quantity), 
+        sum(o.amount) 
+      from orders o 
+      join products p 
+        using (product_id)
+      where 
+        status = 'paid'
+        AND
+        order_date >= %s::date
+        AND 
+        order_date < (%s::date + INTERVAL '1 day')
+      group by 
+        p.product_id, 
+        p.product_name
+      order by
+        sum(o.amount) desc 
+      limit %s 
     """
     params = () 
     cur.execute(sql, params)
