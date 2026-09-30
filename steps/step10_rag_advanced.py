@@ -66,3 +66,6 @@ for row in advanced_search(query, department="CS", k=5):
   print( row[0], row[1], row[2], row[3], row[-2], row[-1], row[4][:20]   )
   print( row[4] )
   break
+
+# 이후 시나리오 
+# 검색 결과를 근거로 프롬프트에 넣어서 추론 -> app.rag.answer() 참고 
