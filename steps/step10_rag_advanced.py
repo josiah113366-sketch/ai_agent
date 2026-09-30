@@ -49,10 +49,20 @@ DEMO_TEXT = """
 from app.retrieval import advanced_search
 # 3. 검색 
 query = "상품 하자 환불 기간과 배송비 부담 주체"
-# 전체 검색 
-for row in advanced_search(query, k=5): 
+
+# 하이브리드 검색 
+
+# 전체 청크 검색 
+# for row in advanced_search(query, k=5): 
+#   print( row[0], row[1], row[2], row[3], row[-2], row[-1], row[4][:20]   )
+#   print( row[4] )
+#   break
+
+# 대상 청크만 검색 
+# 필터를 활용 검색 -> CS만 검색 등 
+# 정확한 필터링이면 빠른 응답 가능
+# department가 틀리면 검색 결과가 부정확해짐 -> hr 
+for row in advanced_search(query, department="CS", k=5): 
   print( row[0], row[1], row[2], row[3], row[-2], row[-1], row[4][:20]   )
   print( row[4] )
   break
-
-# 필터를 활용 검색 -> CS만 검색 등 
