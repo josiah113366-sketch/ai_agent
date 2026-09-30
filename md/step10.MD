@@ -21,3 +21,8 @@ L app
 L steps
   L step10_rag_advanced.py : 신규 
 ```
+
+# 실행
+```
+python -m steps.step10_rag_advanced
+```
