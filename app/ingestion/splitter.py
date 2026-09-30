@@ -14,6 +14,7 @@
 
 # 정규식 
 import re
+from app.embedding import get_embeddings
 
 # 350 글자수(설정값) 이상을 가진 문단을 재료로 쪼개기 진행
 def _splite_sentencess(block: str) -> list[str]: 
@@ -89,13 +90,25 @@ def _semantic_units(text: str) -> list[str]:
 def semantic_splite_text( text:str, threshold: float=0.60, min_chars:int = 300, max_chars: int = 1200 ) -> list[str]:
   # 1. semantic 유닛 단위 분할
   units = _semantic_units( text )
-  
-  _splite_sentencess( text )
-  
-  return []
+  # 2. 값 체크 -> 분절의 결과
+  if not units: return []
+  # 3. 유닛 개수가 1개면 그대로 반환
+  if len(units) == 1: return units
 
+  # 4. 쪼개진 문장 혹은 문장 조각 -> 임베딩 처리
+  embeddings = get_embeddings().embed_documents( units )
 
+  # 5. 담는 그릇 
+  chunks: list[str] = list() 
+  current = units[0] 
 
+  # 6. 유닛간, 이전 벡터와 다음 벡터간 유사도 검사 (순회)
+  for index in range(1, len(units)): 
+    # 6-1. 대상 벡터 획득
+    # 이전 벡터 : 0 -> 1 -> 2 
+    pre_vec = embeddings[ index - 1 ]
+    # 현재 벡터 : 1 -> 2 -> 3 
+    cur_vec = embeddings[ index ]
 
 def splite_text(text: str, max_chars:int = 700):
   # 청크별로 모으는 그룻, 현재 순서상 문서 데이터 
