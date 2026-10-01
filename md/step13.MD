@@ -4,3 +4,19 @@
 
 # sql 
 - 환불 통계를 위한 sql 처리 
+```
+python -m scripts.migrate   
+---
+agentlab=# select * from refunds;
+ refund_id | order_id |      requested_at      |     reason     |  amount  |  status  
+-----------+----------+------------------------+----------------+----------+----------
+         1 |        8 | 2026-09-04 09:00:00+00 | product_defect | 99000.00 | approved
+(1 row)
+```
+
+# 구조 
+```
+/
+L steps
+  L step13_sql_rag_agent.py : 질문을 가지고 llm 추론 진행 
+```

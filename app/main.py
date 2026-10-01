@@ -16,7 +16,14 @@ async def run(query: str):
     ) # 초기 상태를 설정하여 그래프에게 전달
 
     # 전체 맥락 (상태의 변화들을 기록)
-    print( result["messages"] ) 
+    # print( result["messages"] )
+    
+    # 툴 중심 상태 관리값 추출 
+    for message in result["messages"]: 
+        if getattr(message, "tool_calls", None): 
+            print("TOOL CALLS : ", [ x.get('name') for x in message.tool_calls ])
+        if getattr(message, "type", ""): 
+            print("TOOL RESULT : ", message.content)
 
     # 최종 답변 (LLM)
     print("+" * 30)
