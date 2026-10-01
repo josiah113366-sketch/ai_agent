@@ -68,6 +68,9 @@ def top_products(start_date: str, end_date: str, limit:int=3) -> str:
 # 특정 기간의 환불 현황 조회하는 도구
 @tool
 def refund_summary(start_date: str, end_date: str) -> str: 
+    '''
+      날짜 범위 내 환불 요청 건수, 총액, 사유를 조회한다 
+    '''
     with connect() as conn, conn.cursor() as cur:
         sql = """
       SELECT 
