@@ -155,3 +155,22 @@ TOOL RESULT :  현재 `refund_summary` 도구에서 내부 오류(`NameError: na
 - 필요하시면 도구 복구 후 다시 요청해 주세요.
 ++++++++++++++++++++++++++++++
 ```
+
+# 오류 조치
+```
+# 005 실행 로그 삭제 -> psql에서 진행
+delete from schema_migrations where name='005_memory.sql';
+
+# agent_memories 삭제
+drop table agent_memories;
+
+# sql 실행 -> 터이널 에서 진행
+python -m scripts.migrate
+
+# demo() 주석 모두 해제
+step14_memory.py
+
+# 프로그램 실행
+python -m steps.step14_memory
+
+```
