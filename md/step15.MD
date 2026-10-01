@@ -25,3 +25,12 @@
     | **MCP Host** | MCP를 사용하는 전체 애플리케이션 | LangChain Agent |
     | **MCP Client** | MCP Server와 통신 | `FastMCP Client` |
     | **MCP Server** | Tool을 외부에 제공 | `exchange_server.py` |
+
+  - MCP Server를 개발하여 24시간 운영되는 어딘가의 호스팅/클라우드 등에서 운영
+    - 운영/관리 비용 발생
+    - playmcp, 기타 벤더들에서 운영하는 곳에 등록 해당 비용 상쇄할 수 있음 
+  - MCP Server와 통신하여서 해당 서비스를 이용하기 위해서는 MCP Client를 개발해야함.
+    - FastMCP 패키지를 이용하여 개발
+  - 개발자가 만드는 AI 서비스에서 MCP를 사용한다면, MCP Client가 개발/설치되어서 사용되어야 함
+    - LLM/Agent가 도구로서 MCP Client를 사용 -> MCP Server로 요청이 가고 -> 외부 서비스와 엑세스 요청/응답 -> 응답 -> LLM/Agent까지 도달함 
+    - 개발자가 만드는 AI 서비스 -> MCP host라고 부름 
