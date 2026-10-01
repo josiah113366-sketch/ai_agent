@@ -28,7 +28,15 @@ def remember_user_preference(content: str, importance: float=0.7) -> str:
   # 쿼리 실행 
   with connect() as conn, conn.cursor() as cur: 
     # insert 구문 
-    pass
+    sql = """
+            insert into agent_memories
+            (used_id, memory_type, content, embedding, importance)
+            values 
+            (%s, 'preference', %s, %s, %s)
+    """
+    params = (USER_ID, content, vec, importance)
+    cur.execute( sql, params )
+    conn.commit() 
 
   return "preference memory saved" # 도구를 사용한 LLM에게 전달 (랭그래프 설계상 툴 -> Agent)
 
