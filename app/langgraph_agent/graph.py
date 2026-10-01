@@ -59,7 +59,7 @@ def build_graph():
                    │
           ┌────────┴────────┐
           ↓                 ↓
-      "tools"              END       <- 결과값
+      "tools"              END       <- tools_condition 함수의 반환값 
           │                 │
           ↓                 ↓
      tools 노드            END (종료) <- 이동할 노드
