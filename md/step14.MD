@@ -26,7 +26,7 @@ L app
   L config.py         : 사용자 아이디 환경 변수 구성
 L steps
   L step14_memory.py  : 메모리 테스트 
-L .env                : 사용자 아이디 더미 구성
+L .env                : 사용자 아이디 더미 구성 (1명을 위한 아이디임, 실제 제거)
 ```
 
 # sql 반영
