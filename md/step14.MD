@@ -12,3 +12,17 @@
     - 사용자의 선호하는 방식으로 답변을 구성하게 도움 
     - llm이 추론을 할 때, 사용자가 누구고, 어떤 업무를 하고, 어떤 방식으로 답변 받기를 원하는지를 삽입 (프롬프트)
     - llm이 사용자를 처음 만난 사람처럼 행동하지 말고, 과거의 중요한 정보(맥락)을 제공하는 역할 담당 
+
+# 구조
+```
+/
+L sql 
+  L 005_memory.sql    : 사용자의 정보를 저장하는 테이블, 검색
+L app 
+  L tools 
+    L memory_tools.py : sql 역할 담당, 기능적으로 메모리 역할
+  L agent (-> agent_langgraph)
+    L graph.py        : 툴 등록 
+L steps
+  L step14_memory.py  : 메모리 테스트 
+```
