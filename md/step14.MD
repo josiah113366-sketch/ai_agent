@@ -37,4 +37,12 @@ python -m scripts.migrate
 
 # 테이블 구조 확인
 \d agent_memories
+
+# 컬럼명 잘못되어 있으면 수정
+agentlab=# alter table agent_memories rename column used_id to user_id;
+```
+
+# 실행
+```
+python -m steps.step14_memory
 ```

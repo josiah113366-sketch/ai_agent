@@ -30,7 +30,7 @@ def remember_user_preference(content: str, importance: float=0.7) -> str:
     # insert 구문 
     sql = """
             insert into agent_memories
-            (used_id, memory_type, content, embedding, importance)
+            (user_id, memory_type, content, embedding, importance)
             values 
             (%s, 'preference', %s, %s, %s)
     """
@@ -58,7 +58,7 @@ def recall_user_memory(query: str, k: int=3) -> str:
         select 
           id, memory_type, content, importance, 1-(embedding <=> %s) as score
         from agent_memories
-        where used_id = %s
+        where user_id = %s
         order by embedding <=> %s
         limit %s 
     """
