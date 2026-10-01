@@ -19,7 +19,7 @@
 ```
 /
 L app
-  L agent
+  L agent (-> langgraph_agent)
     L __init__.py 
     L graph.py                : 랭그래프 구성 (노드 추가하는 등 구성)
     L prompts.py              : 에이전트의 프롬프트
