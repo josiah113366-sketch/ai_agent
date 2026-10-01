@@ -14,3 +14,11 @@ async def run(query: str):
         # 전체 순환 횟수 제한 (18회는 설정)
         config={"recursion_limit": 18},
     ) # 초기 상태를 설정하여 그래프에게 전달
+
+    # 전체 맥락 (상태의 변화들을 기록)
+    print( result["messages"] ) 
+
+    # 최종 답변 (LLM)
+    print("+" * 30)
+    print("[최종 답변]\n\n", result["messages"][-1].content )
+    print("+" * 30)
