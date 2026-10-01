@@ -54,8 +54,18 @@ def build_graph():
     # 시작점
     graph.add_edge(START, "agent") # 시작 -> Agent 
     # 조건부 실행 (에이전트가 툴을 사용하겠다, 아니면 END 이동 -> 추론을 통해서 판단)
+    """
+                 tools_condition
+                   │
+          ┌────────┴────────┐
+          ↓                 ↓
+      "tools"              END       <- 결과값
+          │                 │
+          ↓                 ↓
+     tools 노드            END (종료) <- 이동할 노드
+    """
     graph.add_conditional_edges( "agent", tools_condition, {"tools": "tools", END: END} )  
-    # 툴 사용 이후 방향성 
+    # 툴 사용 이후 방향성
     graph.add_edge("tools", "agent") # 툴 사용 -> 에이전트 진행
 
     # 3-4. 그래프 컴파일 및 반환 -> 실행 가능한 형태로 구성 반환
