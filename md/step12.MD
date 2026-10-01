@@ -30,6 +30,7 @@ L steps
 ```
 
 # 실행
+- "상품 하자로 반품할 경우 환불 기간과 배송비 부담 주체를 알려주세요."
 ```
 python -m steps.step12_langgraph_agent
 ---
@@ -76,4 +77,37 @@ result["messages"]
     └─ 최종 답변
 
 rounds = 2 (LLM 두번 추론)
+```
+
+# 요구 사항 분석 2 
+- query = "2026-09-01부터 2026-09-05까지 매출과 상위 3개 상품을 알려줘"
+```
+[
+  HumanMessage(content='2026-09-01부터 2026-09-05까지 매출과 상위 3개 상품을 알려줘', additional_kwargs={}, response_metadata={}, id='e5027b58-4c3f-420e-9b26-9329d2da0bd0'), 
+
+  AIMessage(content=[{'type': 'reasoning_content', 'reasoning_content': {'text': '', 'signature': 'EpoCCnkIEhABGAIqQOQJrCzFifEp5IU/B9/cIyNUnPqsl/PxrVMFTK5/t+BfWiI9eh7YidwN6595g+eN8W7TPPjW4vPDz9i7yBbMgPcyDmNsYXVkZS1zYWZmcm9uOABCCHRoaW5raW5nWgw4Mjc5MTM2MTc2MzWoAZHu9tUGEgzZx8fPm6QZE05LfS0aDP1Bz6sqUeCyTJ9VVyIwcSQyPfZKWDArbBmOCnOSv6043b3HHTpO1q8ppDgE6T+FNGuvELwGcPY/BIVE5WeiKk+7GMXWPh8rz4HKWcTdWlFNPs0tshvYQgwmCEUDjFGhxL3qsccqYSMeFx3bVVOxb+nVKycQJlRtZ3ZmNktlmOgS0B0aZwr9P3ig/uv+zgchGAE='}}, {'type': 'text', 'text': '사실 확인을 위해 2026-09-01 ~ 2026-09-05 기간의 매출 집계와 상위 상품 데이터를 조회하겠습니다.'}, {'type': 'tool_use', 'name': 'sales_summary', 'input': {'start_date': '2026-09-01', 'end_date': '2026-09-05'}, 'id': 'tooluse_8u5T4v1pp2d780uqI5TFHM'}, {'type': 'tool_use', 'name': 'top_products', 'input': {'start_date': '2026-09-01', 'end_date': '2026-09-05', 'limit': 3}, 'id': 'tooluse_cuwW5m2eWfVPndyUhnwKTv'}], additional_kwargs={}, response_metadata={'ResponseMetadata': {'RequestId': '60bda207-c8a7-4808-99a0-9ae1e70e7250', 'HTTPStatusCode': 200, 'HTTPHeaders': {'date': 'Thu, 01 Oct 2026 01:27:48 GMT', 'content-type': 'application/json', 'content-length': '1221', 'connection': 'keep-alive', 'x-amzn-requestid': '60bda207-c8a7-4808-99a0-9ae1e70e7250'}, 'RetryAttempts': 0}, 'stopReason': 'tool_use', 'metrics': {'latencyMs': [4610]}, 'model_provider': 'bedrock_converse', 'model_name': 'us.anthropic.claude-sonnet-5'}, id='lc_run--01a0f513-110c-7152-9e1a-32d44f14347b-0', tool_calls=[{'name': 'sales_summary', 'args': {'start_date': '2026-09-01', 'end_date': '2026-09-05'}, 'id': 'tooluse_8u5T4v1pp2d780uqI5TFHM', 'type': 'tool_call'}, {'name': 'top_products', 'args': {'start_date': '2026-09-01', 'end_date': '2026-09-05', 'limit': 3}, 'id': 'tooluse_cuwW5m2eWfVPndyUhnwKTv', 'type': 'tool_call'}], invalid_tool_calls=[], usage_metadata={'input_tokens': 1087, 'output_tokens': 266, 'total_tokens': 1353, 'input_token_details': {'cache_creation': 0, 'cache_read': 0}}), 
+
+  ToolMessage(content='revenue=3586000.00, orders=8, range=2026-09-01~2026-09-05', name='sales_summary', id='25fee7b4-ad4f-4b70-add4-600f6fec31a7', tool_call_id='tooluse_8u5T4v1pp2d780uqI5TFHM'), ToolMessage(content='1. 사내 AI Agent 구축: qty=1, revenue=1200000.00 \n2. RAG 구축 컨설팅: qty=1, revenue=800000.00 \n3. 데이터 분석 패키지: qty=4, revenue=600000.00 ', name='top_products', id='a7492821-337e-4d68-a52d-14569d17d1dc', tool_call_id='tooluse_cuwW5m2eWfVPndyUhnwKTv'), 
+
+  AIMessage(content='## 📊 2026-09-01 ~ 2026-09-05 매출 요약\n\n**전체 매출 집계**\n- 총 매출: **3,586,000원**\n- 총 주문 건수: **8건**\n\n**상위 3개 상품 (매출 기준)**\n\n| 순위 | 상품명 | 판매 수량 | 매출액 |\n|---|---|---|---|\n| 1 | 사내 AI Agent 구축 | 1 | 1,200,000원 |\n| 2 | RAG 구축 컨설팅 | 1 | 800,000원|\n| 3 | 데이터 분석 패키지 | 4 | 600,000원 |\n\n위 데이터는 결제 완료 기준으로 집계된 결과입니다. 추가로 특정 상품의 상세 내역이나 다른 기간 비교가 필요하시면 알려주세요.', additional_kwargs={}, response_metadata={'ResponseMetadata': {'RequestId': 'a307ce4e-c838-47b8-bb58-00f1ee934dc9', 'HTTPStatusCode': 200, 'HTTPHeaders': {'date': 'Thu, 01 Oct 2026 01:27:52 GMT', 'content-type': 'application/json', 'content-length': '898', 'connection': 'keep-alive', 'x-amzn-requestid': 'a307ce4e-c838-47b8-bb58-00f1ee934dc9'}, 'RetryAttempts': 0}, 'stopReason': 'end_turn', 'metrics': {'latencyMs': [3807]}, 'model_provider': 'bedrock_converse', 'model_name': 'us.anthropic.claude-sonnet-5'}, id='lc_run--01a0f513-26fb-7443-a970-a4ee594126dc-0', tool_calls=[], invalid_tool_calls=[], usage_metadata={'input_tokens': 1529, 'output_tokens': 293, 'total_tokens': 1822, 'input_token_details': {'cache_creation': 0, 'cache_read': 0}})
+]
+++++++++++++++++++++++++++++++
+[최종 답변]
+
+ ## 📊 2026-09-01 ~ 2026-09-05 매출 요약
+
+**전체 매출 집계**
+- 총 매출: **3,586,000원**
+- 총 주문 건수: **8건**
+
+**상위 3개 상품 (매출 기준)**
+
+| 순위 | 상품명 | 판매 수량 | 매출액 |
+|---|---|---|---|
+| 1 | 사내 AI Agent 구축 | 1 | 1,200,000원 |
+| 2 | RAG 구축 컨설팅 | 1 | 800,000원 |
+| 3 | 데이터 분석 패키지 | 4 | 600,000원 |
+
+위 데이터는 결제 완료 기준으로 집계된 결과입니다. 추가로 특정 상품의 상세 내역이나 다른 기간 비교가 필요하시면 알려주세요.
+++++++++++++++++++++++++++++++
 ```
