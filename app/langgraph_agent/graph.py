@@ -48,7 +48,7 @@ def build_graph():
     # 3-2. 노드 등록 (LLM 추론, 도구)
     graph.add_node( "agent", call_model ) # LLM Agent 노드 등록 
     # handle_tool_error : 툴 실행 중에 에러 발생 시 에이전트 전체를 바로 실패시키지 않고 오류를 처리하여 agent 대응하게 할 것인가?
-    graph.add_node( ToolNode(TOOLS, handle_tool_error = True) )
+    graph.add_node("tools", ToolNode(TOOLS, handle_tool_errors=True))
 
     # 3-3. 흐름 구성 (실행 방향 지정)
     # 시작점
