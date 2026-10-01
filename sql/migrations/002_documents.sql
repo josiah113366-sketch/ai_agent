@@ -96,11 +96,11 @@ ON documents(department, category, effective_date)
 --    jsonb 타입의 컬럼이므로, jsonb 내부값, 키 등을 빠른 검색을 하기 위해 gin 인덱스 사용
 -- ====================================
 CREATE INDEX IF NOT EXISTS idx_chunks_metadata 
-ON documents_chunks USING gin(metadata) 
+ON document_chunks USING gin(metadata) 
 
 -- ====================================
 -- 5. 임베딩 벡터 유사도 검새용 인덱스 
 --    코사인 거리 유사도 기반 벡터 검색 시 사용할 수 있도록 hnsw 인덱스 반영 
 -- ====================================
 CREATE INDEX IF NOT EXISTS idx_chunks_hnsw
-ON documents_chunks USING hnsw (embedding vector_cosine_ops)
+ON document_chunks USING hnsw (embedding vector_cosine_ops)
