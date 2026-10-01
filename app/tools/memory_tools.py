@@ -46,17 +46,40 @@ def recall_user_memory(query: str, k: int=3) -> str:
   '''
     현재 질문과 관련된 사용자의 과거 장기 기억을 검색한다. 
   '''
-  # ...
+  # 파라미터 구성 
+  q = Vector( get_embeddings().embed_query(query) )
+  # 검색 결과 개수 (1 ~ 5개 제한)
+  k = max(1, min(k, 5))
 
   # 쿼리 실행 
   with connect() as conn, conn.cursor() as cur: 
     # select 구문 
+    sql = """
+        select 
+          id, memory_type, content, importance, 1-(embedding <=> %s) as score
+        from agent_memories
+        where used_id = %s
+        order by embedding <=> %s
+        limit %s 
+    """
+    params = (q, USER_ID, q, k)
+    cur.execute( sql, params )
+    # 결과셋 모두 가져오기
+    rows = cur.fetchall() 
 
-    # fetchall() 
-
-    # 액세스 시간 update 구문 
+    # 액세스 시간 update 구문 -> 결과 셋으로 나온 항목만 대상
+    if rows: 
+      cur.execute("""
+        update
+          agent_memories
+        set 
+          last_accessed_at=NOW() 
+        where 
+          id = ANY(%s)
+      """, ([row[0] for row in rows], ) )
+      conn.commit() 
     pass
 
   # 검색 결과를 문자열로 구성하여 타입, 유사도 점수, 중요도, 내용을 k개 반복 구성하여 반환
   # 도구를 사용한 LLM에게 전달 (랭그래프 설계상 툴 -> Agent)
-  return ""
+  return "\n".join( f"[{typ} score={score:.3f} importance={imp}] {content}" for _, typ, content, imp, score in rows ) or "관련 기억 없음"
