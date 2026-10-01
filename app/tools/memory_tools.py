@@ -1,0 +1,34 @@
+'''
+- @tool이 붙은 함수의 내부 1번 라인에는 함수 주석(doc-string)을 반드시 기재, 함수의 역할 명확하게 기술 -> LLM이 판단하는 재료 
+- 도구 (2개)
+  - 사용자가 명시한 지속적인 신호, 업무 방식을 장기 기억으로 저장하는 도구 함수
+  - 현재 질문과 관련된 사용자의 과거 장기 기억을 검색하는 도구 함수 
+'''
+# 1. 모듈 가져오기 
+from langchain_core.tools import tool 
+from app.database import connect 
+from app.embedding import get_embeddings 
+from app.config import USER_ID # 임시용, 사용자를 구분하는 값
+from pgvector import Vector
+
+# 2. 도구 1
+@tool
+def remember_user_preference(content: str, importance: float=0.7) -> str: 
+  '''
+    사용자가 명시한 지속적인 신호, 업무 방식을 장기 기억으로 저장한다. 
+  '''
+  # ... 
+
+  return "preference memory saved" # 도구를 사용한 LLM에게 전달 (랭그래프 설계상 툴 -> Agent)
+
+# 3. 도구 2 
+@tool
+def recall_user_memory(query: str, k: int=3) -> str: 
+  '''
+    현재 질문과 관련된 사용자의 과거 장기 기억을 검색한다. 
+  '''
+  # ...
+
+  # 검색 결과를 문자열로 구성하여 타입, 유사도 점수, 중요도, 내용을 k개 반복 구성하여 반환
+  # 도구를 사용한 LLM에게 전달 (랭그래프 설계상 툴 -> Agent)
+  return ""
