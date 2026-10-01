@@ -23,6 +23,18 @@ L app
     L memory_tools.py : sql 역할 담당, 기능적으로 메모리 역할
   L agent (-> agent_langgraph)
     L graph.py        : 툴 등록 
+  L config.py         : 사용자 아이디 환경 변수 구성
 L steps
   L step14_memory.py  : 메모리 테스트 
+L .env                : 사용자 아이디 더미 구성
+```
+
+# sql 반영
+```
+python -m scripts.migrate   
+---
+\dt
+
+# 테이블 구조 확인
+\d agent_memories
 ```
