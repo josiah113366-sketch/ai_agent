@@ -38,7 +38,7 @@ def build_graph():
             [SystemMessage(content=SYSTEM_PROMPT), *state["messages"]]
         )
 
-        # 4. 추론 결과, 라운드(LLM 1회 호출) + 1하여 반환 -> state["messages"]에 기록됨 -> 상태 관리 
+        # 4. 추론 결과, 라운드(LLM 1회 호출) + 1하여 반환 -> state["messages"]에 기록됨 -> 상태 관리
         return {"messages":[response], "rounds": rounds + 1}
 
     # 3-1. 그래프 생성
@@ -50,5 +50,13 @@ def build_graph():
     # handle_tool_error : 툴 실행 중에 에러 발생 시 에이전트 전체를 바로 실패시키지 않고 오류를 처리하여 agent 대응하게 할 것인가?
     graph.add_node( ToolNode(TOOLS, handle_tool_error = True) )
 
-    # 3-x. 그래프 컴파일 및 반환
+    # 3-3. 흐름 구성 (실행 방향 지정)
+    # 시작점
+    graph.add_edge(START, "agent") # 시작 -> Agent 
+    # 조건부 실행 (에이전트가 툴을 사용하겠다, 아니면 END 이동 -> 추론을 통해서 판단)
+    graph.add_conditional_edges( "agent", tools_condition, {"tools": "tools", END: END} )  
+    # 툴 사용 이후 방향성 
+    graph.add_edge("tools", "agent") # 툴 사용 -> 에이전트 진행
+
+    # 3-4. 그래프 컴파일 및 반환 -> 실행 가능한 형태로 구성 반환
     return graph.compile()
