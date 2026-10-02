@@ -21,4 +21,26 @@ L steps
 # 실행
 ```
 python -m steps.step17_evaluation
+---
+상품 자체 하자는 언제까지 환불할 수 있을까? -> ['CS-REFUND-2026', 'CS-REFUND-2026', 'CS-REFUND-2026', 'CS-REFUND-2026', 'CS-REFUND-2026'] | expected=CS-REFUND-2026 | rank=1
+
+HitRate@5 = 1.000
+MRR = 1.000
+출장 시 숙박비 한도는 얼마지? -> ['HR-TRAVEL-2026', 'HR-TRAVEL-2026', 'HR-TRAVEL-2026', 'HR-TRAVEL-2026', 'HR-TRAVEL-2026'] | expected=HR-REFUND-2026 | rank=None
+HitRate@5 = 0.500
+MRR = 0.500
+1000만원 이상 추가 할인 시 승인은 누가 하지? -> ['SALES-DISCOUNT-2026', 'SALES-DISCOUNT-2026', 'SALES-DISCOUNT-2026', 'SALES-DISCOUNT-2026', 'HR-LEAVE-2026'] | expected=SALES-DISCOUNT-2026 | rank=1
+HitRate@5 = 0.667
+MRR = 0.667
 ```
+
+# 평가
+
+| 지표 | 의미 | 핵심 질문 |
+|---|---|---|
+| **HitRate@K** | Top-K 안에 정답 문서가 하나라도 있는 비율 | 정답을 찾았나? |
+| **MRR** | 첫 번째 정답 문서의 역순위 평균 | 정답이 얼마나 앞에 있나? |
+| **Precision@K** | Top-K 중 실제 관련 문서의 비율 | 찾은 것 중 쓸모있는 게 얼마나 되나? |
+| **Recall@K** | 전체 관련 문서 중 Top-K가 찾아낸 비율 | 필요한 문서를 얼마나 놓치지 않았나? |
+| **NDCG@K** | 관련도가 높은 문서가 상위에 배치됐는지 평가 | 좋은 문서가 제대로 위에 있나? |
+| **MAP** | 여러 관련 문서의 검색 순위를 종합 평가 | 관련 문서들을 전반적으로 잘 정렬했나? |

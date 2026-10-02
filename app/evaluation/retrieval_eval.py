@@ -45,11 +45,11 @@ def main(k:int = 5):
 
     # 종합 
     # HitRate@K, K개의 검색된 문서들 중 일치되는 비율(몇 개가 포함되었는가?)
-    print(f"HitRate@{k} = { sum(hits) / len(hits):.3f }")
+    print(f"HitRate@{k} = {sum(hits) / len(hits):.3f}")
 
     # MRR
     # 정답 문서가 검색 결과의 앞 쪽에 위치할수록 높은 점수를 얻음
-    print(f"MRR = { sum(reciprocal) / len(reciprocal):.3f }")
+    print(f"MRR = {sum(reciprocal) / len(reciprocal):.3f}")
 
     pass
   
