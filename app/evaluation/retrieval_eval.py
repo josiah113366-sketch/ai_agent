@@ -28,6 +28,16 @@ def main(k:int = 5):
     # 3. 기대 정답 (문서 코드) 획득
     expected = case['expected_source']
 
+    # 4. 기대 문서 코드(정답)이 Tok-K 결과에 포함되었는지 체크
+    hit = expected in codes # True | False 
+    hits.append(int(hit))
+
+    # 5. 기대 문서(정답)이 몇 번째에 검색되었는지 체크, 없었다면 None 
+    # hit가 참이면 -> 문서가 존재했다 (기대처럼 검색되었다) -> 순위 세팅, 거짓이면 -> None 
+    rank = (codes.index(expected) + 1) if hit else None
+
+    # 6. 
+
     pass
   
   pass
