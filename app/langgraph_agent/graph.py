@@ -54,6 +54,14 @@ def build_graph():
     # Agent 최종 답변을 JSON으로 구조화하는 노드 
     async def format_output(state:AgentState): 
         # claude 기준 모델 버전이 5로 진입한 이후 -> 답변 구조화 랭체인 api 사용 x -> LLM으로 처리하도록 변경
+        # 최종 답변 획득 
+        answer = state['messages'][-1].content
+        # 사용된 도구의 이름들
+        tool_names = [
+            getattr(m, "name", "")
+            for m in state['messages']    
+            if getattr(m, "name", "") == 'tool'
+        ]
 
         # 구조화에 대한 LLM 호출
         response = await model.ainvoke([
