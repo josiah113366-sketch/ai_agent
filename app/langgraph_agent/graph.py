@@ -95,8 +95,11 @@ def build_graph():
 
         # 응답 처리 
         content = response.content.strip()
-        print( "+"*30 )
-        print( "구조화 요청 1차 결과값" )
+        # print( "+"*30 )
+        # print( "구조화 요청 1차 결과값" )
+        # print( content )
+        # print( "+"*30 )
+        # 앞뒤로 코드 삽입용 마크 다운 삭제, 앞뒤 공백 제거
         '''
             구조화 요청 1차 결과값
             ```json
@@ -106,11 +109,14 @@ def build_graph():
             "tools_used": [],
             "confidence": 0.85
             }
-```
+            ```
         '''
-        print( content )
-        print( "+"*30 )
+        # 노이즈 제거
+        content = content.removeprefix("```json").removesuffix("```").strip()
+        # JSON 문자열 -> AgentResponse 객체로 세팅
+        final_ar = AgentResponse.model_validate_json( content )
 
+        return {"final":final_ar}
 
     # 3-1. 그래프 생성
     graph = StateGraph(AgentState)  # 상태 정보를 가진 그래프 생성
