@@ -5,7 +5,7 @@
 '''
 
 # 1. 필요 모듈 획득
-from langchain_core.messages import SystemMessage # Agent 구성 시 프롬프트에 System 프롬프트용 
+from langchain_core.messages import SystemMessage, HumanMessage # Agent 구성 시 프롬프트에 System 프롬프트용 
 from langgraph.graph import StateGraph, START, END # 랭그래프의 구성 요소 
 from langgraph.prebuilt import ToolNode, tools_condition # Tool 실행, 호출 여부 판단 
 from app.llm import get_chat_model # LLM 모델 
@@ -56,7 +56,34 @@ def build_graph():
         # claude 기준 모델 버전이 5로 진입한 이후 -> 답변 구조화 랭체인 api 사용 x -> LLM으로 처리하도록 변경
 
         # 구조화에 대한 LLM 호출
-        response = await model.ainvoke()
+        response = await model.ainvoke([
+            HumanMessage(content=f"""
+                다음 답변을 JSON으로 구조화하세요.
+                반드시 JSON만 출력하세요.
+
+                형식:
+                {{
+                "answer": "최종 답변",
+                "sources": ["근거 또는 출처"],
+                "tools_used": ["사용한 도구"],
+                "confidence": 0.0
+                }}
+
+                답변:
+                {answer}
+
+                실제 사용된 도구:
+                {tool_names}
+
+                규칙:
+                - answer에는 최종 답변을 작성합니다.
+                - sources에는 답변의 근거 또는 출처를 작성합니다.
+                - tools_used에는 실제 사용된 도구만 작성합니다.
+                - 근거가 없다면 sources는 빈 배열로 작성합니다.
+                - confidence는 0.0~1.0 사이 숫자로 작성합니다.
+                - 근거가 약하면 confidence를 낮추세요.
+            """)
+        ])
 
 
     # 3-1. 그래프 생성
