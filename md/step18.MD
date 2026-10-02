@@ -4,4 +4,12 @@
 
 # 세팅 
 - 랭스미스 가입
-  - https://smith.langchain.com/
+  - https://smith.langchain.com/ > 가입 > 로그인 
+  - 대시보드 > 앱 선택 > tracing > +Project 클릭 > "ai-agent" 입력 후 생성
+    - 키 생성 버튼 사용 -> .env 카피
+      ```
+        LANGSMITH_TRACING=true
+        LANGSMITH_ENDPOINT=https://api.smith.langchain.com
+        LANGSMITH_API_KEY=...
+        LANGSMITH_PROJECT="ai-agent"
+      ```
