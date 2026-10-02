@@ -51,3 +51,8 @@ L app
 L steps
   L step15_mcp.py      : MCP 테스트용, MCP host 포지션
 ```
+
+# 실행
+```
+python -m steps.step15_mcp
+```
