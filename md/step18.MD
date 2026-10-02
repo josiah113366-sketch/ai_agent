@@ -22,3 +22,9 @@ L steps
 L app
   L observability.py : 랭스미스 상태 반환
 ```
+
+# 실행
+```
+python -m steps.step18_observability
+---
+```
