@@ -3,12 +3,19 @@ Agent 실행을 통해서 LLM/TOOL/랭그래프 등이 실행 -> 랭스미스에
 '''
 import asyncio
 from app.main import run
+from app.observability import status
 
-def main():
+async def main():
   # 1. 랭스미스 상태 체크
-  print("LangSmith Status", )
-  query = "상품 자체 하자의 환불 조건을 근거와 함께 알려줘."
+  print("LangSmith Status", status() )
+
+  # 2. 에이전트 사용
+  print("RUN Agent")
+  result = await run("상품 자체 하자의 환불 조건을 근거와 함께 알려줘.")
+
+  # 3. 결과 확인
+  print( result )
 
 asyncio.run( 
-  # run(query)
+  main() 
 )
