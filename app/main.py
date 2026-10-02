@@ -27,5 +27,9 @@ async def run(query: str):
 
     # 최종 답변 (LLM)
     print("+" * 30)
-    print("[최종 답변]\n\n", result["messages"][-1].content )
+    # print("[최종 답변]\n\n", result["messages"][-1].content )
+
+    # 출력 포맷을 설정한 이후 -> final
+    final = result.get('final')
+    print("[최종 답변]\n\n", final.model_dump_json(indent=2) if final else result["messages"][-1].content )
     print("+" * 30)
