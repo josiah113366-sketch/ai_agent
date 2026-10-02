@@ -22,6 +22,11 @@ from app.output import AgentResponse
 # 2. 툴 목록 구성
 TOOLS = [sales_summary, top_products, refund_summary, search_company_policy, remember_user_preference, recall_user_memory, get_exchange_rate]
 
+# 4. 노드 분기 함수
+def route_after_agent(state:AgentState):
+    # 툴 호출이 존재하면 툴 노드로 이동, 없다면 최종 출력 포맷(format)로 이동
+    return "tools" if getattr(state['messages'][-1], "tool_calls", None) else "format"
+
 # 3. 그래프 빌드
 def build_graph(): 
     # 추론만 담당하는 LLM
@@ -79,9 +84,17 @@ def build_graph():
           ↓                 ↓
      tools 노드            END (종료) <- 이동할 노드
     """
-    graph.add_conditional_edges( "agent", tools_condition, {"tools": "tools", END: END} )  
+    graph.add_conditional_edges( "agent"
+                                , route_after_agent, {
+                                    # 분기 함수가 메시지 검사 -> 툴 사용 확인되면 툴 노드 이동, 아니면 포맷 노드 이동 
+                                    "tools": "tools", 
+                                    "format": "format"
+                                } )  
     # 툴 사용 이후 방향성
     graph.add_edge("tools", "agent") # 툴 사용 -> 에이전트 진행
+
+    # 포맷 노드 -> END 
+    graph.add_edge("format", END)
 
     # 3-4. 그래프 컴파일 및 반환 -> 실행 가능한 형태로 구성 반환
     return graph.compile()
