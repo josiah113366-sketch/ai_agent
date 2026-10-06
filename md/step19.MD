@@ -118,3 +118,13 @@ A4 : 현재 refund_summary 도구에서 서버 측 내부 오류(NameError: name
 
 도구가 정상화되는 대로 바로 재조회하겠습니다.
 ```
+
+# 특이점 
+- 출력 구조, 프럼프트를 다르게 부여하여 새로운 업무를 담당하는 에이전트 구성할 수 있음 
+```
+model    = get_chat_model() # 단순 모델
+planner  = model.with_structured_output(Plan)      # 단순 모델 + 특이점 프럼프트 + 출력 구조 
+verifier = model.with_structured_output(Verifier)  # 단순 모델 + 특이점 프럼프트 + 출력 구조 
+build_graph() # 랭그래프 구조 작성, LLM, tool 노드를 추가하여, 규칙 부여 -> 새로운 에이전트 구성
+# 직선 구조가 완성되면 랭체인 반영 가능
+```
