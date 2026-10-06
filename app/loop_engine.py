@@ -26,3 +26,6 @@ async def run_agentic_loop(task:str, max_attempts:int=2):
   planner  = model.with_structured_output(Plan)      # 질문 -> 하위 질문으로 분해
   verifier = model.with_structured_output(Verifier)  # 실행 결과의 근거, 충분성 검증
   feedback = ""
+
+  # 3-2. 
+  
