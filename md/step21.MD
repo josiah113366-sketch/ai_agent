@@ -12,8 +12,8 @@
 / 
 --- 서비스 관점 (백엔드)
 L app 
-  L main.py                 : Agent를 fastapi에서 가급적 공용으로 실행하도록 함수 추가(보정)
-  L service.py              : fastapi로 백엔드 구성, /chat, /health
+  L [v] main.py                 : Agent를 fastapi에서 가급적 공용으로 실행하도록 함수 추가(보정)
+  L [v] service.py              : fastapi로 백엔드 구성, /chat, /health
 L steps 
   L step21_service_cloud.py : 로컬에서 fastapi 구동 
 --- 도커 
