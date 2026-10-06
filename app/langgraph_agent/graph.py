@@ -15,6 +15,8 @@ from app.tools.sql_tools import sales_summary, top_products, refund_summary # SQ
 from app.tools.rag_tools import search_company_policy # rag tool 
 from app.tools.memory_tools import remember_user_preference, recall_user_memory # 메모리 툴 
 from app.tools.mcp_tools import get_exchange_rate # MCP 도구
+# 하네스 도구 
+from app.harness import ALLOWED_TOOLS, assert_allowed_tool, Budget
 
 # 최종 응답의 출력 형식 정의한 pydantic 모델
 from app.output import AgentResponse
@@ -118,6 +120,18 @@ def build_graph():
 
         # 상태 객체에 fianl 키에 값을 부여한 것임 
         return {"final":final_ar}
+
+    # 하네스 노드 구성
+    async def check_harness(state:AgentState): 
+        # 1. 실행 횟수 제한 
+        # 2. 해당 도구가 허락되었는지 체크 가능 -> 구성 ! 
+        # 히스토리 상, 마지막 메시지에서 툴 사용(tool_calls) 표식이 있는지 체크, 있다면 값 획득
+        tool_calls = getattr(state["messages"][-1], "tools_calls", []) 
+        for call in tool_calls: 
+            assert_allowed_tool( call['name'] )
+            
+        # 3. 수행 시간? 이후 
+        pass
 
     # 3-1. 그래프 생성
     graph = StateGraph(AgentState)  # 상태 정보를 가진 그래프 생성
