@@ -15,3 +15,12 @@
 | 위험 작업 차단 | rm, 임의 shell 등 | `assert_allowed_tool()` |
 | 검증 | test/lint/build | Tool 결과/Verifier |
 | 목적 | 코딩 Agent 통제 | 업무 Agent 통제 |
+
+# 구성
+```
+/
+L app
+  L harness.py : 정책 계층 구성
+L steps
+  L step20_harness_guardrail.py : 하네스를 적용한 에이전트 수행 테스트
+```
