@@ -30,19 +30,20 @@ class Budget:
     # 툴 사용 라운드 관리
     self.tool_rounds = tool_rounds
 
-    # 현재 제약 조건 검사 - 체킹 
-    def check(self): 
-      # 체킹
-      if self.tool_rounds > self.limits.max_tool_rounds:
-        raise RuntimeError("툴 사용 제한 횟수 초과")
-      if time.monotonic() - self.started > self.limits.max_tool_rounds:
-        raise RuntimeError("실제 실행 시간 제한 초과")
-      print('하네스 체크 통과 (툴 실행 횟수, 툴 수행 시간)')
+  # 현재 제약 조건 검사 - 체킹 
+  def check(self): 
+    # 체킹
+    if self.tool_rounds > self.limits.max_tool_rounds:
+      raise RuntimeError("툴 사용 제한 횟수 초과")
+    if time.monotonic() - self.started > self.limits.max_tool_rounds:
+      raise RuntimeError("실제 실행 시간 제한 초과")
+    print('하네스 체크 통과 (툴 실행 횟수, 툴 수행 시간)', (time.monotonic() - self.started) )
 
   # Tool 1회 사용 
   def consume_tool_round(self):
     # 툴 사용 -> 라운드 1회 증가
     self.tool_rounds += 1
+    print('consume_tool_round 호출, 라운드 증가', self.tool_rounds)
     self.check() 
 
 # 요청한 툴이 허용한 툴 목록에 존재하는가? 
