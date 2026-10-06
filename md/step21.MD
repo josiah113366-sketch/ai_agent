@@ -15,7 +15,7 @@ L app
   L [v] main.py                 : Agent를 fastapi에서 가급적 공용으로 실행하도록 함수 추가(보정)
   L [v] service.py              : fastapi로 백엔드 구성, /chat, /health
 L steps 
-  L step21_service_cloud.py : 로컬에서 fastapi 구동 
+  L step21_agent_service.py : 로컬에서 fastapi 구동 
 --- 도커 
 L [v] requirements.txt      : fastapi, uvicorn 추가 
 L Dockerfile                : 에이전트 구동하는 컨테이너 이미지 
@@ -28,4 +28,14 @@ L infra
     L bootstrap.bat         : ec2(인프라) 자동 배포 구성
   L terraform               
     L *.tf                  : 인프라 구성용 (버지니아 리전 사용)
+```
+
+# 로컬 실행 
+```
+python -m steps.step21_agent_service
+---
+http://localhost:8000/docs 접속 
+- url 별로 테스트 진행 (프런트 페이지 없이 사용 가능 -> 향후 slack/텔레그램 등 기타 서비스 담당)
+  - /chat : `try it out` -> 프럼프트 구성하여 질문 후 execute 버튼 클릭 
+  - /health : `try it out` -> execute 버튼 클릭 
 ```

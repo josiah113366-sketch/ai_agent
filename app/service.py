@@ -35,6 +35,7 @@ async def chat(req:ChatRequest):
   pass
 
 # 4-2. /health 
+# 서버가 잘 운용 중인지, 살아있는지 점검용. bat로 인프라 구성 시 중간에 활용됨, 인프라 구성 후 outputs.tf에서 사용
 @app.post("/health")
 async def health(): 
   return {"status":"ok"}
