@@ -47,3 +47,7 @@ http://localhost:8000/docs 접속
 # 도커 컴포즈 구성
 - 서비스 
   - Agent 컨테이너 추가 
+- 컨테이너 구성 
+  ```
+    docker compose up -d --build 
+  ```

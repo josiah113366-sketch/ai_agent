@@ -144,7 +144,7 @@ def build_graph():
 
         # 3. 해당 도구가 허락되었는지 체크 가능 -> 구성 ! 
         # 히스토리 상, 마지막 메시지에서 툴 사용(tool_calls) 표식이 있는지 체크, 있다면 값 획득
-        tool_calls = getattr(state["messages"][-1], "tools_calls", []) 
+        tool_calls = getattr(state["messages"][-1], "tool_calls", []) 
         for call in tool_calls: 
             assert_allowed_tool( call['name'] )
 

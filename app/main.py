@@ -9,7 +9,7 @@ graph = build_graph()
 
 # 에이전트 실행 함수
 async def invoke_agent(question:str): 
-    result = await graph().ainvoke(
+    result = await graph.ainvoke(
         {
             "messages": [("user", question)], 
             "rounds": 0, 
