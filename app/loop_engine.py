@@ -20,3 +20,9 @@ class Verifier(BaseModel):
 
 # 3. Agentic Loop 구성 : 계획 -> 실행 -> 검증 -> 부족하다는 피드백 나오면 재시도 
 #    시간/비용 고려, 최대 재시도 횟수 설정(실제 주입, 배제 고민, 주입 -> 이후 Human 개입 고려)
+async def run_agentic_loop(task:str, max_attempts:int=2): 
+  # 3-1. 모델, 플랜 구조, 검증 구조, 피드백 변수 
+  model    = get_chat_model()
+  planner  = model.with_structured_output(Plan)      # 질문 -> 하위 질문으로 분해
+  verifier = model.with_structured_output(Verifier)  # 실행 결과의 근거, 충분성 검증
+  feedback = ""
