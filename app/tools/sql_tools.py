@@ -89,4 +89,4 @@ def refund_summary(start_date: str, end_date: str) -> str:
         cur.execute(sql, params)
         amount, count, reasons = cur.fetchone() 
         pass
-    return f"refund_count={count}, refund_amount={amount}, range={start_date}~{end_date}, reason={reason}"
+    return f"refund_count={count}, refund_amount={amount}, range={start_date}~{end_date}, reason={reasons}"

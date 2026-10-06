@@ -73,7 +73,7 @@ def build_graph():
         tool_names = [
             getattr(m, "name", "")
             for m in state['messages']    
-            if getattr(m, "name", "") == 'tool'
+            if getattr(m, "type", "") == 'tool'
         ]
 
         # 구조화에 대한 LLM 호출
