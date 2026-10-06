@@ -148,6 +148,10 @@ def build_graph():
 
     # 3-2. 노드 등록 (LLM 추론, 도구)
     graph.add_node( "agent", call_model ) # LLM Agent 노드 등록 
+
+    # 하네스 노드 등록
+    graph.add_node("harness", check_harness) # 하네스 노드 등록
+
     # handle_tool_error : 툴 실행 중에 에러 발생 시 에이전트 전체를 바로 실패시키지 않고 오류를 처리하여 agent 대응하게 할 것인가?
     graph.add_node("tools", ToolNode(TOOLS, handle_tool_errors=True))
     # 출력 포맷 처리 
@@ -158,11 +162,14 @@ def build_graph():
     graph.add_edge(START, "agent") # 시작 -> Agent 
     # 조건부 실행 (에이전트가 툴을 사용하겠다, 아니면 END 이동 -> 추론을 통해서 판단)
     graph.add_conditional_edges( "agent"
-                                , route_after_agent, {
                                     # 분기 함수가 메시지 검사 -> 툴 사용 확인되면 툴 노드 이동, 아니면 포맷 노드 이동 
-                                    "tools": "tools", 
+                                , route_after_agent, {
+                                    "tools": "harness", # 툴 노드로 이동하라고 체크 -> 하네스 노드로 이동 시킴 
                                     "format": "format"
                                 } )  
+    # 하네스 노드 통과 -> 툴 노드 이동 
+    graph.add_edge("harness", "tools")
+
     # 툴 사용 이후 방향성
     graph.add_edge("tools", "agent") # 툴 사용 -> 에이전트 진행
 
