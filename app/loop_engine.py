@@ -35,3 +35,22 @@ async def run_agentic_loop(task:str, max_attempts:int=2):
     print("[PLAN]" if attempt == 1 else "[REPLAN]")
     for i, q in enumerate(plan.sub_questions, 1): 
       print(f"Q{i} : {q}") 
+
+    # 3-2-2. EXECUTE -> 서브 질문별로 진행 (랭그래프로 구성된 에이전트(rag/sql tool 사용) 담당)
+    answers = []
+    for i, q in enumerate(plan.sub_questions, 1): 
+      result = await build_graph().ainvoke({
+              "messages":[("user", q)], 
+              "rounds":0, 
+              "final":None
+              }, config={"recursion_limit":18})
+      # final 키 값 체크 -> 원하는 구조로 답변 도착 
+      final = result.get('final')
+      # 구조화 실패 시 -> 마지막 LLM의 응답을 답변으로 설정
+      answer = final.answer if final else result["messages"][-1].content
+      # 대답 모음 
+      answers.append( answer )
+      print( f"Q{i} 실행 완료" )
+
+    # 3-2-3. 답변을 하나의 말뭉치로 구성
+    final_answer = "\n".join(f"Q{i+1}: {q}\nA{i+1} : {a}" for i, (q, a) in enumerate(zip(plan.sub_questions, answers)))
