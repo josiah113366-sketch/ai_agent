@@ -43,3 +43,7 @@ http://localhost:8000/docs 접속
 # Agent 컨테이너화 
 - Dockerfile 구성하여 이미지 생성
   - Fastapi + 랭그래프 등 
+
+# 도커 컴포즈 구성
+- 서비스 
+  - Agent 컨테이너 추가 

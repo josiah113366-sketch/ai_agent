@@ -27,7 +27,7 @@ async def chat(req:ChatRequest):
     return final.model_dump() # 객체 직렬화
   # 3. 응답 메시지 구성
   return {
-    "answer": result['message'][-1].content,
+    "answer": result['messages'][-1].content,
     "sources": [],
     "tools_used": [],
     "confidence": 0.0
