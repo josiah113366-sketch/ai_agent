@@ -17,6 +17,21 @@ class ChatRequest(BaseModel):
 # 4-1. /chat 
 @app.post("/chat")
 async def chat(req:ChatRequest): 
+  # 1. 에이전트 질문 담아서 요청 
+  result = await invoke_agent(req.message)
+  # 2. 응답 결과 중 구조화된 데이터 획득 
+  final = result.get('final')
+  print( req.message, " -> ", final)
+  # 아웃풋 포맷팅 완료되면 
+  if final: 
+    return final.model_dump() # 객체 직렬화
+  # 3. 응답 메시지 구성
+  return {
+    "answer": result['message'][-1].content,
+    "sources": [],
+    "tools_used": [],
+    "confidence": 0.0
+  }
   pass
 
 # 4-2. /health 
