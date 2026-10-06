@@ -28,4 +28,10 @@ async def run_agentic_loop(task:str, max_attempts:int=2):
   feedback = ""
 
   # 3-2. 
-  
+  for attempt in range(1, max_attempts+1): # 현재 구성상 기본 2회 반복 
+    # 3-2-1. PLAN -> REPLAN (feedback을 반영)
+    plan = await planner.ainvoke(f'업무 질문을 검증 가능한 하위 질문 1~4개로 분해하세요. task={task}\nfeedback={feedback}')
+    print(f'\n +++ ATTEMPT {attempt} +++')
+    print("[PLAN]" if attempt == 1 else "[REPLAN]")
+    for i, q in enumerate(plan.sub_questions, 1): 
+      print(f"Q{i} : {q}") 
