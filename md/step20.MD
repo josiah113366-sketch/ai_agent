@@ -21,6 +21,28 @@
 /
 L app
   L harness.py : 정책 계층 구성
+  L agent (-> langgraph_agent)
+    L graph.py : 하네스 노드 반영 -> 제한 정책을 에이전트 반영
 L steps
   L step20_harness_guardrail.py : 하네스를 적용한 에이전트 수행 테스트
+```
+
+# 에이전트 구성상 하네스 반영
+```
+    Agent
+    ↓
+    Tool 호출 결정
+    ↓
+    Harness             ← 실제 개입
+    ├─ Tool 권한 검사
+    └─ Tool 횟수 검사
+    ↓
+    ToolNode
+    ↓
+    Agent
+```
+
+# 실행
+```
+python -m steps.step20_harness_guardrail
 ```
