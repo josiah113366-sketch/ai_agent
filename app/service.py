@@ -37,4 +37,4 @@ async def chat(req:ChatRequest):
 # 4-2. /health 
 @app.post("/health")
 async def health(): 
-  pass
+  return {"status":"ok"}
