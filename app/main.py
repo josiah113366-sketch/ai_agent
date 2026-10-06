@@ -10,9 +10,15 @@ graph = build_graph()
 # 에이전트 실행 함수
 async def invoke_agent(question:str): 
     result = await graph().ainvoke(
-        {"messages": [("user", question)], "rounds": 0, "final":None, "tool_rounds":0 },
+        {
+            "messages": [("user", question)], 
+            "rounds": 0, 
+            "final":None, 
+            "tool_rounds":0 
+        },
         config={"recursion_limit": 18},
     )
+    return result
 
 async def run(query: str): 
     '''
