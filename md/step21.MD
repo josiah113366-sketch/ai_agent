@@ -17,7 +17,7 @@ L app
 L steps 
   L step21_service_cloud.py : 로컬에서 fastapi 구동 
 --- 도커 
-L requirements.txt          : fastapi, uvicorn 추가 
+L [v] requirements.txt      : fastapi, uvicorn 추가 
 L Dockerfile                : 에이전트 구동하는 컨테이너 이미지 
 L docker-compose.yml        : 수정, 2개 서비스 (postgreSQL, agent service)
 
