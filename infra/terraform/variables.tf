@@ -49,7 +49,7 @@ variable "db_instance_class" {
   description = "RDS 인스턴스 유형"
   type        = string
   # 소형 스펙
-  default = "db.t4g.micro"
+  default = "db.t4g.small"
 }
 
 # PostgreSQL 엔진 버전 
