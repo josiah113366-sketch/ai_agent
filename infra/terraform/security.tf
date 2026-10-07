@@ -3,10 +3,48 @@
 
 # EC2 시큐리티 그룹 
 resource "aws_security_group" "ec2" {
-  
+  name = "${var.project_name}-ec2-sg"
+  description = "Agent API Security Group"
+  vpc_id = aws_vpc.main.id
+  # 외부에서 SG를 통해서 접근하는 트래픽 규칙
+  ingress = {
+    description = "FastAPI"
+    # 허용할 포트 범위, 시작 포트
+    from_port = 8000 
+    # 허용할 포트 범위, 마지막 포트
+    to_port = 8000
+    # 허용 프로토콜 
+    protocol = "tcp"
+    # 접근 허용 가능한 IPv4 cidr -> 0.0.0.0/0 
+    cidr_blocks = [var.api_cidr]
+  }
+  egress = {}
+  # 식별 태그 
+  tags = { 
+    Name= "${var.project_name}-ec2-sg"
+  }
 }
 
 # RDS 시큐리티 그룹 
 resource "aws_security_group" "rds" {
-  
+  name = "${var.project_name}-rds-sg"
+  description = "PostgreSQL Only From Agent EC2 Security Group"
+  vpc_id = aws_vpc.main.id
+  ingress = {
+    description = "PostgreSQL from EC2"
+    # 허용할 포트 범위, 시작 포트
+    from_port = 5432
+    # 허용할 포트 범위, 마지막 포트
+    to_port = 5432
+    # 허용 프로토콜 
+    protocol = "tcp"
+    # 접근 허용 가능한 특정 시큐리티 그룹
+    # 권한이 있는 리소스(ec2가 aws_security_group.ec2.id 그룹에 속함)에서 접근 가능
+    security_groups = [aws_security_group.ec2.id]
+  }
+  egress = {}
+  # 식별 태그 
+  tags = { 
+    Name= "${var.project_name}-rds-sg"
+  }
 }

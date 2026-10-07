@@ -12,7 +12,7 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true # VPC 내에서 dns_hostnames 사용 허가 
   # 태그 
   tags = { 
-    Name= "{var.project_name}-vpc"
+    Name= "${var.project_name}-vpc"
   }
 }
 # IGW 생성 
@@ -21,7 +21,7 @@ resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
   # 식별 태그 
   tags = { 
-    Name= "{var.project_name}-igw"
+    Name= "${var.project_name}-igw"
   }
 }
 # 서브넷 생성
@@ -39,7 +39,7 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
   # 식별 태그 
   tags = { 
-    Name= "{var.project_name}-public-${count.index+1}"
+    Name= "${var.project_name}-public-${count.index+1}"
   }
 }
 # 라우트 테이블 생성
@@ -53,7 +53,7 @@ resource "aws_route_table" "public" {
   }
   # 식별 태그 
   tags = { 
-    Name= "{var.project_name}-public-rt"
+    Name= "${var.project_name}-public-rt"
   }
 }
 # 서브넷, IGw 연결, 라우트 할당
