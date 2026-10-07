@@ -66,6 +66,8 @@ deploy.tf : 애플리케이션 배포
             현재 프로젝트 -> zip 압축 -> 비공개 s3 버킷 업로드 
             차후 bootstrap.sh이 zip을 내려받아서 Docker Image 구성
 iam.tf : ec2 role 
+ec2.tf : Amazon Linux 2023 ec2 구성, bootstrap.sh로 user_data 전달 처리 
+         인프라 생성 후 실제 서비스 자동 설치/DB 초기화(sql 마이그레이션(테이블 생성 -> 데이터 삽입)) / 컨테이너 실행
 ```
 
 # 인프라 구성
