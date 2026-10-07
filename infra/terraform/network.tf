@@ -16,9 +16,32 @@ resource "aws_vpc" "main" {
   }
 }
 # IGW 생성 
-resource "aws_internet_gateway" "main" {}
+resource "aws_internet_gateway" "main" {
+  # 어느 vpc에 적용(혹은 속하는가)
+  vpc_id = aws_vpc.main.id
+  # 식별 태그 
+  tags = { 
+    Name= "{var.project_name}-igw"
+  }
+}
 # 서브넷 생성
-resource "aws_subnet" "public" {}
+resource "aws_subnet" "public" {
+  # 동일한 형태의 리소스를 몇 개 구성할 것인가? 
+  count = 2
+  # 어떤 vpc에 속하는가? 
+  vpc_id = aws_vpc.main.id
+  # 라우팅 시 사용할 IPv4 cidr 범위
+  # 10.30.1.0/24, 10.30.2.0/24 <- 서브넷의 각각 cidr 범위
+  cidr_block = cidrsubnet(var.vpc_cidr, 8, count.index+1)
+  # 가용 영역 -> 서브넷별로 다른 가용 영역 배치
+  availability_zone = data.aws_availability_zones.available.names[count.index]
+  # public IP 자동 할당 -> 인프라 구축되면 해당 http://IP:8000로 접속
+  map_public_ip_on_launch = true
+  # 식별 태그 
+  tags = { 
+    Name= "{var.project_name}-public-${count.index+1}"
+  }
+}
 # 라우트 테이블 생성
 resource "aws_route_table" "public" {}
 # 서브넷, IGw 연결, 라우트 할당
