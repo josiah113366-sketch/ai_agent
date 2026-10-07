@@ -25,6 +25,9 @@ resource "aws_instance" "agent" {
   # AWS 다른 서비스 api 호출 (ec2 객체 획득, bedrock 모델 호출, ssm parameter db url 획득)
   iam_instance_profile = aws_iam_instance_profile.ec2.name 
 
+  # bootstrap.sh가 수정될 경우 -> ec2 신규 교체 -> user_data 다시 작동 
+  user_data_replace_on_change = 
+
   # 사용자 데이터 구성
   user_data = templatefile("${path.module}/../scripts/bootstrap.sh", {
     # 원천 소스가 저장되어 있는 버킷 
@@ -35,8 +38,8 @@ resource "aws_instance" "agent" {
     aws_region = var.aws_region 
     # db 접속 url (동적 생성)
     database_url_parameter  = aws_ssm_parameter.database_url.name
-    chat_model  = var.chat_model
-    embed_model  = var.embed_model 
+    chat_model  = var.bedrock_chat_model
+    embed_model  = var.bedrock_embed_model 
     # 임시용, 사용자 메모리를 위해서 고정 -> 추후 삭제, 사용자가 로그인하면 사용자별로 제공
     user_id  = var.user_id
   })
