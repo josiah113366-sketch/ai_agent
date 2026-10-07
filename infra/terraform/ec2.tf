@@ -24,4 +24,8 @@ resource "aws_instance" "agent" {
 
   # AWS 다른 서비스 api 호출 (ec2 객체 획득, bedrock 모델 호출, ssm parameter db url 획득)
   iam_instance_profile = aws_iam_instance_profile.ec2.name 
+
+  # 사용자 데이터 구성
+  user_data = templatefile("${path.module}/../scripts/bootstrap.sh", {
+  })
 }
