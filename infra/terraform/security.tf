@@ -3,14 +3,14 @@
 
 # EC2 시큐리티 그룹 
 resource "aws_security_group" "ec2" {
-  name = "${var.project_name}-ec2-sg"
+  name        = "${var.project_name}-ec2-sg"
   description = "Agent API Security Group"
-  vpc_id = aws_vpc.main.id
+  vpc_id      = aws_vpc.main.id
   # 외부에서 SG를 통해서 접근하는 트래픽 규칙
-  ingress = {
+  ingress {
     description = "FastAPI"
     # 허용할 포트 범위, 시작 포트
-    from_port = 8000 
+    from_port = 8000
     # 허용할 포트 범위, 마지막 포트
     to_port = 8000
     # 허용 프로토콜 
@@ -19,27 +19,27 @@ resource "aws_security_group" "ec2" {
     cidr_blocks = [var.api_cidr]
   }
   # 아웃바운드
-  egress = {
+  egress {
     # 모든 포트 허용 
     from_port = 0
-    to_port = 0
+    to_port   = 0
     # 모든 프로토콜
     protocol = "-1"
     # 모든 IP로 아웃바운드 허가
     cidr_blocks = ["0.0.0.0/0"]
   }
   # 식별 태그 
-  tags = { 
-    Name= "${var.project_name}-ec2-sg"
+  tags = {
+    Name = "${var.project_name}-ec2-sg"
   }
 }
 
 # RDS 시큐리티 그룹 
 resource "aws_security_group" "rds" {
-  name = "${var.project_name}-rds-sg"
+  name        = "${var.project_name}-rds-sg"
   description = "PostgreSQL Only From Agent EC2 Security Group"
-  vpc_id = aws_vpc.main.id
-  ingress = {
+  vpc_id      = aws_vpc.main.id
+  ingress {
     description = "PostgreSQL from EC2"
     # 허용할 포트 범위, 시작 포트
     from_port = 5432
@@ -52,17 +52,17 @@ resource "aws_security_group" "rds" {
     security_groups = [aws_security_group.ec2.id]
   }
   # 아웃바운드
-  egress = {
+  egress {
     # 모든 포트 허용 
     from_port = 0
-    to_port = 0
+    to_port   = 0
     # 모든 프로토콜
     protocol = "-1"
     # 모든 IP로 아웃바운드 허가
     cidr_blocks = ["0.0.0.0/0"]
   }
   # 식별 태그 
-  tags = { 
-    Name= "${var.project_name}-rds-sg"
+  tags = {
+    Name = "${var.project_name}-rds-sg"
   }
 }
