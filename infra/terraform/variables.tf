@@ -44,7 +44,6 @@ variable "db_username" {
 }
 
 # RDS 내에 비밀번호 -> rds.tf에서 랜덤으로 구성 -> SSM에서 관리 -> AWS KMS 저장
-
 # RDS 인스턴스 사양 
 variable "db_instance_class" {
   description = "RDS 인스턴스 유형"
@@ -82,6 +81,15 @@ variable "user_id" {
   description = "임시 사용자 ID"
   type = string
   default = "demo_user-16"
+}
+
+# FastAPI (8000) 접속 IP cidr 
+# 보안 그룹에서 ingress에서 활용
+# 편의상 전체 개방
+variable "api_cidr" {
+  description = "FastAPI용 CIDR"
+  type = string
+  default = "0.0.0.0/0"
 }
 
 # SSH 관련 (키 페어 등)
