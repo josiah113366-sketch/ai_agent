@@ -9,3 +9,19 @@ data "aws_ssm_parameter" "al2023_ami" {
 }
 
 # 인스턴스 구성 
+resource "aws_instance" "agent" {
+  # 이미지 -> 최신 아마존 리눅스 2023 AMI ID 사용 
+  ami = data.aws_ssm_parameter.al2023_ami.value
+
+  # ec2 인스턴스 유형 
+  instance_type = var.ec2_instance_type
+
+  # 서브넷 ID, ec2 배치 -> 0을 지정해서 사용 (설정)
+  subnet_id = aws_subnet.public[0].id 
+
+  # 보안 그룹 
+  vpc_security_group_ids = [aws_security_group.ec2.id]
+
+  # AWS 다른 서비스 api 호출 (ec2 객체 획득, bedrock 모델 호출, ssm parameter db url 획득)
+  iam_instance_profile = aws_iam_instance_profile.ec2.name 
+}
