@@ -2,10 +2,19 @@
 
 # 버킷 생성 시 이름에 랜덤 부여 
 resource "random_id" "bucket_suffix" {
+  # 랜덤 값 크기 
+  byte_length = 4 
 }
 
 # 버킷 생성 
 resource "aws_s3_bucket" "deploy" {
+  # 버킷명이 매번 생성해도 중복 x (고유한 이름 가짐)
+  bucket = "${var.project_name}-deploy-${random_id.bucket_suffix.hex}"
+  # 버킷이 삭제될 때 내부에 객체가 있어도 함께 삭제할 것인가? 
+  force_destroy = true
+  tags = { 
+    Name = "${var.project_name}-deploy-s3" 
+  }
 }
 
 # 버킷에 비공개 설정
