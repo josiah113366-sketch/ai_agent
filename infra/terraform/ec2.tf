@@ -27,5 +27,17 @@ resource "aws_instance" "agent" {
 
   # 사용자 데이터 구성
   user_data = templatefile("${path.module}/../scripts/bootstrap.sh", {
+    # 원천 소스가 저장되어 있는 버킷 
+    source_bucket = aws_s3_bucket.deploy-bucket
+    # 다운로드할 소스(압축 파일)의 key 값 
+    source_key  = aws_s3_object.source.key
+    # 리전 
+    aws_region = var.aws_region 
+    # db 접속 url (동적 생성)
+    database_url_parameter  = aws_ssm_parameter.database_url.name
+    chat_model  = var.chat_model
+    embed_model  = var.embed_model 
+    # 임시용, 사용자 메모리를 위해서 고정 -> 추후 삭제, 사용자가 로그인하면 사용자별로 제공
+    user_id  = var.user_id
   })
 }
