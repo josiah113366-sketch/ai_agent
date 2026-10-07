@@ -19,10 +19,24 @@ resource "aws_s3_bucket" "deploy" {
 
 # 버킷에 비공개 설정
 resource "aws_s3_bucket_public_access_block" "deploy" {
+  # 버킷 지정 
+  bucket = aws_s3_bucket.deploy.id 
+  # 액세스 설정 -> 모두 차단 
+  block_public_acls = true
+  block_public_policy = true
+  ignore_public_acls = true
+  restrict_public_buckets = true
 }
 
 # 버킷에 업로드될 리소스 암호화 처리 
 resource "aws_s3_bucket_server_side_encryption_configuration" "deploy" {
+  bucket = aws_s3_bucket.deploy.id 
+  # s3 서버측 암호화 규칙 정의 
+  rule { 
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
 }
 
 # 업로드할 프로젝트 압축 (배제되는 파일도 존재함)
