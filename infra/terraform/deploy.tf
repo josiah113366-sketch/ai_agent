@@ -42,6 +42,24 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "deploy" {
 # 업로드할 프로젝트 압축 (배제되는 파일도 존재함)
 # CI/CD 사용하지 않는 구조
 resource "archive_file" "source" {
+  # 종류
+  type = "zip"
+  # 소스 코드 위치 -> 현재 위치에서 2단계 위 레벨임 
+  source_dir = "${path.module}/../.."
+  # zip 파일 생성 -> tf 파일이 있는 곳에 생성한다 
+  output_path = "${path.module}/agent-source.zip"
+  # zip에 미포함 목록 
+  excludes = [
+    ".git",
+    ".env", 
+    "__pycache__",
+    "infra/terraform/.terraform",
+    "infra/terraform/.terraform-build",
+    "infra/terraform/agent-source.zip",
+    "infra/terraform/terraform.tfstate",
+    "infra/terraform/terraform.tfstate.backup", 
+    # 기타 필요 없는 파일들 포함
+
 }
 
 # 버킷에 zip 파일 업로드
