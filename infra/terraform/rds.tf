@@ -78,5 +78,14 @@ resource "aws_db_instance" "postgres" {
 
 # 접속 URL 동적 구성 SSM SecurityString으로 저장 
 resource "aws_ssm_parameter" "database_url" {
-  
+  # 이름 
+  name = "/${var.project_name}/database-url"
+  # 타입, [v] SecurityString, Principal 
+  type = "SecurityString"
+  # 실제 값 (접속 URL)
+  value = "postgresql://${var.db_username}:${urlencode(random_password.database.result)}@${aws_db_instance.postgres.address}:5432/${var.db_name}"
+
+  tags = {
+    Name = "${var.project_name}-database-url" 
+  }
 }
