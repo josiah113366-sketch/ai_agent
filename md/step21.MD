@@ -65,6 +65,7 @@ rds.tf : RDS + 벡터 디비 관련 구성. 비번 자동 생성, 접속 URL 자
 deploy.tf : 애플리케이션 배포 
             현재 프로젝트 -> zip 압축 -> 비공개 s3 버킷 업로드 
             차후 bootstrap.sh이 zip을 내려받아서 Docker Image 구성
+iam.tf : ec2 role 
 ```
 
 # 인프라 구성
