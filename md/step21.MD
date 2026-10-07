@@ -61,4 +61,15 @@ variables.tf : tf 구성에 필요한 모든 변수들 설정
 network.tf : VPC 구성 (VPC->public subnet 2개 -> Route Table -> IGW -> 외부) + 가용 영역에 서브넷 배치
              EC2 public subnet 개방, RDS public subnet 배치되지만 EC2에서만 접근 제한
 security.tf : 보안 그룹 구성(방화벽 등), ec2, rds
+rds.tf : RDS + 벡터 디비 관련 구성. 비번 자동 생성, 접속 URL 자동 구성 -> SSM에서 전달하도록 KMS에 저장 구조. 코드, tf 파일에 db 비번 x 
+```
+
+# 인프라 구성
+```
+# 초기화
+terraform init 
+# 포맷팅 
+terraform fmt 
+# 유효성 검사
+terraform validate 
 ```
