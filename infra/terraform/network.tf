@@ -43,6 +43,25 @@ resource "aws_subnet" "public" {
   }
 }
 # 라우트 테이블 생성
-resource "aws_route_table" "public" {}
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.main.id
+  route = {
+    # 라우팅할 CIDR 블럭 범위
+    cidr_block = "0.0.0.0/0" 
+    # 인터넷 트래픽 방향 -> IGW 전달
+    gateway_id = aws_internet_gateway.main.id 
+  }
+  # 식별 태그 
+  tags = { 
+    Name= "{var.project_name}-public-rt"
+  }
+}
 # 서브넷, IGw 연결, 라우트 할당
-resource "aws_route_table_association" "public" {}
+resource "aws_route_table_association" "public" {
+  # 리소스 2개(서브넷) 지정
+  count = 2
+  # 서브넷 ID 
+  subnet_id = aws_subnet.public[count.index].id
+  # 라우트 테이블 연결 
+  route_table_id = aws_route_table.public.id 
+}
