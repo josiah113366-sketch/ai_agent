@@ -43,4 +43,33 @@ resource "aws_instance" "agent" {
     # 임시용, 사용자 메모리를 위해서 고정 -> 추후 삭제, 사용자가 로그인하면 사용자별로 제공
     user_id  = var.user_id
   })
+
+  # EC2 루트 EBS 디스크 설정 - 옵션 
+  root_block_device {
+    volume_type = "gp3"
+    # GB, GIB 단위, 루트 디스크 크기 
+    volume_size = 12 
+    # 볼륨 암호화 
+    encrypted = true
+  }
+
+  # 메타데이터 서비스 보안 설정 - 옵션 
+  metadata_options {
+    http_endpoint = "enabled"
+    http_tokens = "required"
+  }
+
+  # ec2 생성 전 반드시 구성되어야 할 리소스 명시 
+  depends_on = [ 
+    aws_s3_object.source, 
+    aws_db_instance.postgres, 
+    aws_iam_role_policy.agent, 
+    aws_iam_role_policy_attachment.ssm_core  
+  ]
+
+  tags = {
+    Name = "${var.project_name}-agent-ec2"
+  }
+
 }
+
