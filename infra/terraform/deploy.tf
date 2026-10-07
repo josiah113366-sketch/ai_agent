@@ -41,7 +41,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "deploy" {
 
 # 업로드할 프로젝트 압축 (배제되는 파일도 존재함)
 # CI/CD 사용하지 않는 구조
-resource "archive_file" "source" {
+data "archive_file" "source" {
   # 종류
   type = "zip"
   # 소스 코드 위치 -> 현재 위치에서 2단계 위 레벨임 
@@ -69,7 +69,7 @@ resource "aws_s3_object" "source" {
   # key -> 파일명에 해시값을 적용하여 변화 감지 
   key = "releases/agent-source-${data.archive_file.source.output_md5}.zip"
   # 로컬 파일의 위치
-  source = data.archive_file.output_path
+  source = data.archive_file.source.output_path
   # 소스에 MD5 적용하여 파일 변경 시 s3 object 감지 
   etag = data.archive_file.source.output_md5
 }
